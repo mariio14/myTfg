@@ -1,0 +1,1 @@
+export const GET_FEED_COMPLETED = "users/feed/getFeedCompleted";
