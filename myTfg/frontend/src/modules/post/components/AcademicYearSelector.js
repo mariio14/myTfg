@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 const AcademicYearSelector = (selectProps) => {
 
     const years = Array.from({ length: 24 }, (_, i) => {
-        const year = 2000 + i;
+        const year = 2023 - i;
         return `${year}/${year + 1}`;
     });
 

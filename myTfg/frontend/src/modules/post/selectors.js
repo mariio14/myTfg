@@ -15,6 +15,11 @@ export const getUniversities = state => {
     return moduleState ? moduleState.universities : null;
 };
 
+export const getSubjects = state => {
+    const moduleState = getModuleState(state);
+    return moduleState ? moduleState.subjects : null;
+};
+
 export const getRefreshFeed = state =>
     getModuleState(state).feedRefresh;
 

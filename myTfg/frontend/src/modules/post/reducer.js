@@ -7,6 +7,7 @@ const initialState = {
 	feed: [],
 	post: null,
 	universities: null,
+	subjects: null
 };
 
 const feed = (state = initialState.feed, action) => {
@@ -51,10 +52,25 @@ const universities = (state = initialState.universities, action) => {
 
 }
 
+const subjects = (state = initialState.subjects, action) => {
+
+	switch (action.type) {
+
+		case actionTypes.FIND_SUBJECTS_COMPLETED:
+			return action.subjects;
+
+		default:
+			return state;
+
+	}
+
+}
+
 const reducer = combineReducers({
 	feed,
 	post,
-	universities
+	universities,
+	subjects
 });
 
 export default reducer;

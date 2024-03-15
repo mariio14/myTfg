@@ -44,6 +44,9 @@ appFetch(`/posts/update/${id}`, fetchConfig('PUT', {titulo, descripcion, subject
 
 export const findAllUniversities = (onSuccess) =>
     appFetch('/posts/universities', fetchConfig('GET'), onSuccess);
+
+export const findSubjects = (id,onSuccess) =>
+    appFetch(`/posts/subjects/${id}`, fetchConfig('GET'), onSuccess);
     
 export const followPost = (id, onSuccess, onErrors) =>
 	appFetch(`/posts/follow/${id}`, fetchConfig('POST'), onSuccess, onErrors);

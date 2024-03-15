@@ -71,16 +71,27 @@ const findAllUniversitiesCompleted = universities => ({
 
 export const findAllUniversities = () => (dispatch, getState) => {
 
-//	const universities = selectors.getUniversities(getState());
+	const universities = selectors.getUniversities(getState());
 
-//	if (!universities) {
+	if (!universities) {
 
 		backend.postService.findAllUniversities(
 			unis => dispatch(findAllUniversitiesCompleted(unis))
 		);
+	}
 
-//	}
+}
 
+const findSubjectsCompleted = subjects => ({
+	type: actionTypes.FIND_SUBJECTS_COMPLETED,
+	subjects
+});
+
+export const findSubjects = id => (dispatch, getState) => {
+
+	backend.postService.findSubjects(id,
+		subjects => dispatch(findSubjectsCompleted(subjects))
+	);
 }
 
 export const followPost = postId => dispatch => {

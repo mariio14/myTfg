@@ -5,8 +5,8 @@ import {useNavigate} from 'react-router-dom';
 import * as actions from '../actions';
 import {AcademicYearSelector, CategorySelector} from "../index";
 import 'react-datepicker/dist/react-datepicker.css';
-import DatePicker from 'react-datepicker';
 import { Client } from '@stomp/stompjs';
+import SubjectSelector from "./SubjectSelector";
 
 
 const Post = () => {
@@ -16,6 +16,7 @@ const Post = () => {
     const [titulo, setTitulo] = useState('');
     const [descripcion, setDescripcion] = useState('');
 	const [academicYear, setAcademicYear] = useState('');
+	const [uniId, setUniId] = useState('');
 	const [subjectId, setSubjectId] = useState('');
     const [mode, setMode] = useState('Producto');
 	const [backendErrors, setBackendErrors] = useState(null);
@@ -54,7 +55,7 @@ const Post = () => {
             dispatch(actions.postear(
                 titulo,
                 descripcion,
-                subjectId,
+                uniId,
 				academicYear,
                 () => {
 					navigate('/*');
@@ -132,7 +133,7 @@ const Post = () => {
 			                         
 									<div className="form-group col">
 										<label htmlFor="url" className="col-md-12 col-form-label">
-											AcademicYear
+											Academic Year
 										</label>
 										<div className="col-md-6">
 											<AcademicYearSelector
@@ -156,7 +157,7 @@ const Post = () => {
 				                            </label>
 										
 										<div className="col-md-6">
-											<input className="form-control" data-testid="post-image-pick" type="file" id="formFileMultiple" multiple accept="image/*" onChange={handleFileRead}/>
+											<input className="form-control" data-testid="post-image-pick" type="file" id="formFileMultiple" multiple onChange={handleFileRead}/>
 										</div>	
 										
 									</div>
@@ -169,9 +170,32 @@ const Post = () => {
 												id="categoryId"
 												data-testid="post-category-pick"
 												className={`custom-select my-1 mr-sm-2 form-control`}
+												value={uniId}
+												onChange={e => {setUniId(e.target.value);
+																dispatch(actions.findSubjects(e.target.value));
+												}}
+												required
+											/>
+											<div className="invalid-feedback">
+												Campo requerido
+											</div>
+
+										</div>
+									</div>
+
+									<div className="form-group col">
+										<label htmlFor="formFileMultiple" className="col-md-12 col-form-label">
+											Asignatura
+										</label>
+										<div className="col-md-6">
+											<SubjectSelector
+												id="categoryId"
+												data-testid="post-category-pick"
+												className={`custom-select my-1 mr-sm-2 form-control`}
 												value={subjectId}
 												onChange={e => setSubjectId(e.target.value)}
 												required
+												disabled={uniId===''}
 											/>
 											<div className="invalid-feedback">
 												Campo requerido
