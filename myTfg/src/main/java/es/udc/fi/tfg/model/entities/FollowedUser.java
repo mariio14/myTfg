@@ -17,6 +17,8 @@ public class FollowedUser {
     public FollowedUser(Users follower, Users followed) {
         this.follower = follower;
         this.followed = followed;
+        this.follower.getFollowedUsers().add(this);
+        this.followed.getFollowerUsers().add(this);
     }
 
 

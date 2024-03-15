@@ -2,5 +2,9 @@ package es.udc.fi.tfg.model.entities;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FollowedUserDao extends JpaRepository<FollowedSubject, Long> {
+import java.util.Optional;
+
+public interface FollowedUserDao extends JpaRepository<FollowedUser, Long> {
+
+    Optional<FollowedUser> findByFollowed_IdAndFollower_Id(Long followedId, Long followerId);
 }

@@ -3,8 +3,10 @@ package es.udc.fi.tfg.model.services;
 import es.udc.fi.tfg.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.tfg.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.tfg.model.entities.Users;
+import es.udc.fi.tfg.model.services.exceptions.AlreadyFollowingException;
 import es.udc.fi.tfg.model.services.exceptions.IncorrectLoginException;
 import es.udc.fi.tfg.model.services.exceptions.IncorrectPasswordException;
+import es.udc.fi.tfg.model.services.exceptions.NotFollowingException;
 
 /**
  * The Interface UserService.
@@ -61,5 +63,14 @@ public interface UserService {
 	 */
 	void changePassword(Long id, String oldPassword, String newPassword)
 		throws InstanceNotFoundException, IncorrectPasswordException;
+
+
+	Users getUserProfile(Long id) throws InstanceNotFoundException;
+
+	void followUser(Long userId, Long userToFollowId) throws AlreadyFollowingException, InstanceNotFoundException;
+
+	void unfollowUser(Long userId, Long userToUnfollowId) throws InstanceNotFoundException, NotFollowingException;
+
+	boolean userFollows(Long userId, Long userFollowedId);
 
 }

@@ -3,7 +3,7 @@ import {useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 
 import * as actions from '../actions';
-import {CategorySelector} from "../index";
+import {AcademicYearSelector, CategorySelector} from "../index";
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import { Client } from '@stomp/stompjs';
@@ -134,14 +134,19 @@ const Post = () => {
 										<label htmlFor="url" className="col-md-12 col-form-label">
 											AcademicYear
 										</label>
-										<div className="col-md-12">
-											<input type="text" id="url" className="form-control" data-testid="post-input-url"
-												   value={academicYear}
-												   onChange={e => setAcademicYear(e.target.value)}
-												   required/>
+										<div className="col-md-6">
+											<AcademicYearSelector
+												id="academicYear"
+												data-testid="post-year-pick"
+												className={`custom-select my-1 mr-sm-2 form-control`}
+												value={academicYear}
+												onChange={e => setAcademicYear(e.target.value)}
+												required
+											/>
 											<div className="invalid-feedback">
 												Campo requerido
 											</div>
+
 										</div>
 									</div>
 									

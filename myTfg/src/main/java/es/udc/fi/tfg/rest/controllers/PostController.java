@@ -52,7 +52,22 @@ public class PostController {
      * @return the block dto
      */
     @GetMapping("/myFeed")
-    public BlockDto<PostDto> findPostsByuserId(@RequestAttribute Long userId,
+    public BlockDto<PostDto> findPostsByUserId(@RequestAttribute Long userId,
+                                               @RequestParam(defaultValue = "0") int page) {
+
+        Block<Post> postBlock = postService.findPostsByUserId(userId, page, 2);
+
+        List<PostDto> postDtoList = new ArrayList<>();
+        for (Post post : postBlock.getItems()) {
+            PostDto postDto = PostConversor.toPostDto(post);
+            postDtoList.add(postDto);
+        }
+        return new BlockDto<>(postDtoList, postBlock.getExistMoreItems());
+    }
+
+
+    @GetMapping("/feed/{userId}")
+    public BlockDto<PostDto> findPostsByOtherUserId(@PathVariable Long userId,
                                                @RequestParam(defaultValue = "0") int page) {
 
         Block<Post> postBlock = postService.findPostsByUserId(userId, page, 2);
@@ -143,9 +158,7 @@ public class PostController {
             }
         else rating = new Rating(0L, 0, post.getUser(), post);
 
-        float avgRating = ratingService.getAvgPostRatings(id);
-
-        return PostConversor.toPostDtoReturn(post, BigDecimal.valueOf(avgRating), RatingConversor.toRatingDto(rating));
+        return PostConversor.toPostDtoReturn(post, RatingConversor.toRatingDto(rating));
     }
 
     @GetMapping("/universities")

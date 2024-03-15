@@ -9,6 +9,7 @@ export {default as PostDetails} from "./components/PostDetails";
 export {default as FilterAndSearch} from "./components/FilterAndSearch";
 export {default as UpdatePost} from "./components/UpdatePost";
 export {default as CategorySelector} from "./components/CategorySelector";
+export {default as AcademicYearSelector} from "./components/AcademicYearSelector"
 
 // eslint-disable-next-line
 export default {actions, actionTypes, reducer, selectors};

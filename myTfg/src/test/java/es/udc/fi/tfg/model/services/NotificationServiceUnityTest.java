@@ -117,6 +117,6 @@ public class NotificationServiceUnityTest {
     }
 
     private Post getValidPost() {
-        return new Post(getValidUser(), "null", "titulo", "description", LocalDateTime.now(), new Subject("name", new University("name")));
+        return new Post(getValidUser(), "null", "titulo", "description", LocalDateTime.now(), new Subject("name", new University("name")),new BigDecimal(0));
     }
 }

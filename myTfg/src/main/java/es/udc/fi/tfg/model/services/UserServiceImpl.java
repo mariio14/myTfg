@@ -2,8 +2,12 @@ package es.udc.fi.tfg.model.services;
 
 import java.util.Optional;
 
+import es.udc.fi.tfg.model.entities.FollowedUser;
+import es.udc.fi.tfg.model.entities.FollowedUserDao;
 import es.udc.fi.tfg.model.entities.UserDao;
 import es.udc.fi.tfg.model.entities.Users;
+import es.udc.fi.tfg.model.services.exceptions.AlreadyFollowingException;
+import es.udc.fi.tfg.model.services.exceptions.NotFollowingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,6 +36,9 @@ public class UserServiceImpl implements UserService {
 	/** The user dao. */
 	@Autowired
 	private UserDao userDao;
+
+	@Autowired
+	private FollowedUserDao followedUserDao;
 
 	/**
 	 * Sign up.
@@ -140,4 +147,70 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	public Users getUserProfile(Long id)
+			throws InstanceNotFoundException {
+
+		Optional<Users> usersOptional =  userDao.findById(id);
+
+		if (usersOptional.isEmpty())
+			throw new InstanceNotFoundException("project.entities.user", id);
+
+		return usersOptional.get();
+	}
+
+
+	@Override
+	public void followUser(Long userId, Long userToFollowId) throws AlreadyFollowingException, InstanceNotFoundException {
+
+		Users user = permissionChecker.checkUser(userId);
+
+		Optional<Users> usersOptional = userDao.findById(userToFollowId);
+
+		if(usersOptional.isEmpty()) {
+			throw new InstanceNotFoundException("project.entities.users", userToFollowId);
+		}
+
+		Optional<FollowedUser> optFollowedUser = followedUserDao.findByFollowed_IdAndFollower_Id(userToFollowId, userId);
+
+		if (!optFollowedUser.isEmpty()) {
+			throw new AlreadyFollowingException("Ya esta siguiendo a este post");
+		}
+
+		FollowedUser followedUser = new FollowedUser(user, usersOptional.get());
+
+		followedUserDao.save(followedUser);
+	}
+
+
+	@Override
+	public void unfollowUser(Long userId, Long userToUnfollowId) throws InstanceNotFoundException, NotFollowingException {
+		Users user = permissionChecker.checkUser(userId);
+
+		Optional<Users> usersOptional = userDao.findById(userToUnfollowId);
+		if(usersOptional.isEmpty()) {
+			throw new InstanceNotFoundException("project.entities.users", userToUnfollowId);
+		}
+		Users unfollowed = usersOptional.get();
+
+		Optional<FollowedUser> optFollowedUser = followedUserDao.findByFollowed_IdAndFollower_Id(userId, userToUnfollowId);
+
+		if (optFollowedUser.isEmpty()) {
+			throw new NotFollowingException("No esta siguiendo a este post");
+		}
+
+		FollowedUser followedUser1 = optFollowedUser.get();
+
+		followedUserDao.delete(followedUser1);
+
+		unfollowed.getFollowerUsers().removeIf(followedUser -> followedUser.equals(followedUser1));
+		user.getFollowedUsers().removeIf(followedUser -> followedUser.equals(followedUser1));
+	}
+
+	@Override
+	public boolean userFollows(Long userId, Long userFollowingId) {
+		Optional<FollowedUser> optionalFollowedUser = followedUserDao.findByFollowed_IdAndFollower_Id(userId, userFollowingId);
+
+		return optionalFollowedUser.isPresent();
+	}
 }

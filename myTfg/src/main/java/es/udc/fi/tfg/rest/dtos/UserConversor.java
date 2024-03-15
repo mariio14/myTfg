@@ -63,4 +63,9 @@ public class UserConversor {
 
 	}
 
+	public static final UserProfileDto toUserProfileDto(Users user, boolean followed) {
+		return new UserProfileDto(user.getId(), user.getUserName(), user.getFirstName(), user.getLastName(), user.getEmail(),
+				user.getRole().toString(),user.getAvatar(), followed);
+	}
+
 }

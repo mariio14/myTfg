@@ -32,7 +32,8 @@ public class Post {
 
     private Subject subject;
 
-    /** The ratings. */
+    private BigDecimal avgRating;
+
     private Set<Rating> ratings = new HashSet<>();
 
     private Set<Comentario> comentarios = new HashSet<>();
@@ -44,13 +45,14 @@ public class Post {
      */
     public Post(){}
 
-    public Post(Users user, String title, String description, String academicYear, LocalDateTime creationDate, Subject subject) {
+    public Post(Users user, String title, String description, String academicYear, LocalDateTime creationDate, Subject subject, BigDecimal avgRating) {
         this.user = user;
         this.title = title;
         this.description = description;
         this.academicYear = academicYear;
         this.creationDate = creationDate;
         this.subject = subject;
+        this.avgRating = avgRating;
     }
 
 
@@ -150,6 +152,14 @@ public class Post {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public BigDecimal getAvgRating() {
+        return avgRating;
+    }
+
+    public void setAvgRating(BigDecimal avgRating) {
+        this.avgRating = avgRating;
     }
 
     /**

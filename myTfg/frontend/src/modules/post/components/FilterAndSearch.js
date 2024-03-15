@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
-import { CategorySelector, Feed } from "../../post";
+import {AcademicYearSelector, CategorySelector, Feed} from "../../post";
 import * as actions from '../actions';
 
 
 const FilterAndSearch = () => {
 	const dispatch = useDispatch();
 	const [order, setOrder] = useState("");
-	const [minYear, setMinYear] = useState('2000/2001');
-	const [maxYear, setMaxYear] = useState('2023/2024');
-	const [universityId, setUniversityId] = useState(0);
+	const [minYear, setMinYear] = useState('');
+	const [maxYear, setMaxYear] = useState('');
+	const [universityId, setUniversityId] = useState('');
 	const [search, setSearch] = useState('');
 	const [isCardExpanded, setIsCardExpanded] = useState(false);
 
@@ -123,27 +123,15 @@ const FilterAndSearch = () => {
 
 										<div className="input-group col-12" style={{ marginTop: '0.6rem' }}>
 											<label className="col-md-12 col-form-label" style={{ paddingRight: '1rem' }}>
-												Año:
+												Filtrar por cursos:
 											</label>
-											<div className="col-3">
-												<input type="number" id="minPrice" className="form-control" data-testid="min-price-input"
-													value={minYear}
-													onChange={e => setMinYear(e.target.value)}
-													onKeyDown={handleInputKeyDown}
-													autoFocus
-												/>
-											</div>
+											<AcademicYearSelector style={{ backgroundColor: '#212529', color: 'white', marginLeft: '0px !important' }} id="categoryId" className="custom-select my-1 mr-s m-2" data-testid="category-selector"
+															  value={minYear} onChange={e => setMinYear(e.target.value)} />
 
 											<div className="px-1"> - </div>
 
-											<div className="col-3">
-												<input type="number" id="maxPrice" className="form-control" data-testid="max-price-input"
-													value={maxYear}
-													onChange={e => setMaxYear(e.target.value)}
-													onKeyDown={handleInputKeyDown}
-													autoFocus
-												/>
-											</div>
+											<AcademicYearSelector style={{ backgroundColor: '#212529', color: 'white', marginLeft: '0px !important' }} id="categoryId" className="custom-select my-1 mr-s m-2" data-testid="category-selector"
+																  value={maxYear} onChange={e => setMaxYear(e.target.value)} />
 										</div>
 									</div>
 								</div>

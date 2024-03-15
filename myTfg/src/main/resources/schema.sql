@@ -25,6 +25,20 @@ INSERT INTO Users (userName, password, firstName, lastName, email, role, avatar)
 
 
 CREATE TABLE IF NOT EXISTS FollowedUser (
+   id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   followedId BIGINT NOT NULL,
+   followerId BIGINT NOT NULL,
+   CONSTRAINT FollowedSubjectSubjectIdFK FOREIGN KEY (followedId)
+       REFERENCES Users (id)
+       ON DELETE CASCADE,
+   CONSTRAINT FollowedSubjectUserIdFK FOREIGN KEY (followerId)
+       REFERENCES Users (id)
+       ON DELETE CASCADE
+);
+
+
+
+CREATE TABLE IF NOT EXISTS FollowedUser (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     followerId BIGINT NOT NULL,
     followedId BIGINT NOT NULL,
@@ -79,6 +93,7 @@ CREATE TABLE IF NOT EXISTS Post (
     academicYear VARCHAR(255) NOT NULL,
     userId VARCHAR(255) NOT NULL,
     subjectId BIGINT NOT NULL,
+    avgRating DECIMAL(2, 1) NOT NULL,
     CONSTRAINT PostUserIdFK FOREIGN KEY (userId)
                             REFERENCES Users (id)
                             ON DELETE CASCADE,

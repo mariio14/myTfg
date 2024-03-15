@@ -47,7 +47,7 @@ public class PostServiceImpl implements PostService  {
             throw new InstanceNotFoundException("Asignatura no encontrada", subject);
         }
 
-        post = new Post(user, titulo, description, academicYear, LocalDateTime.now(), subject.get());
+        post = new Post(user, titulo, description, academicYear, LocalDateTime.now(), subject.get(), new BigDecimal(0));
 
         postDao.save(post);
         return post;

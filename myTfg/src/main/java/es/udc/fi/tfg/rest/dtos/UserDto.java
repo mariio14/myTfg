@@ -38,7 +38,7 @@ public class UserDto {
 	private String email;
 	
 	/** The role. */
-	private String role; // Dejarlo por si hay nuevas funciones que te mandan o lo quitamos por ahora, que solo tenemos un rol?????
+	private String role;
 
 	private byte[] avatar;
 	/**

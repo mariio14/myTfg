@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Base64;
 import java.util.Locale;
 
+import es.udc.fi.tfg.model.services.exceptions.*;
 import es.udc.fi.tfg.rest.dtos.*;
 import es.udc.fi.tfg.model.entities.Users;
 import es.udc.fi.tfg.model.services.UserService;
@@ -16,23 +17,11 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import es.udc.fi.tfg.model.common.exceptions.DuplicateInstanceException;
 import es.udc.fi.tfg.model.common.exceptions.InstanceNotFoundException;
-import es.udc.fi.tfg.model.services.exceptions.IncorrectLoginException;
-import es.udc.fi.tfg.model.services.exceptions.IncorrectPasswordException;
-import es.udc.fi.tfg.model.services.exceptions.PermissionException;
 
 /**
  * The Class UserController.
@@ -206,6 +195,21 @@ public class UserController {
 
 		userService.changePassword(id, params.getOldPassword(), params.getNewPassword());
 
+	}
+
+	@GetMapping("/{id}")
+	public UserProfileDto userProfile(@PathVariable("id") Long id, @RequestAttribute Long userId)  throws InstanceNotFoundException {
+		return UserConversor.toUserProfileDto(userService.getUserProfile(id), userService.userFollows(userId,id));
+	}
+
+	@PostMapping("/follow/{id}")
+	public void followUser(@PathVariable Long id, @RequestAttribute Long userId) throws InstanceNotFoundException, AlreadyFollowingException {
+		userService.followUser(userId, id);
+	}
+
+	@DeleteMapping("/unfollow/{id}")
+	public void unfollowUser(@PathVariable Long id, @RequestAttribute Long userId) throws InstanceNotFoundException, NotFollowingException {
+		userService.unfollowUser(userId, id);
 	}
 
 	/**

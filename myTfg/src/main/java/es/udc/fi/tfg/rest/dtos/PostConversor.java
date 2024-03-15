@@ -21,8 +21,8 @@ public class PostConversor{
 				post.getCreationDate(), post.getApuntes());
 	}
 
-	public static final PostDtoReturn toPostDtoReturn(Post post, BigDecimal avgRating, RatingDto rating) {
+	public static final PostDtoReturn toPostDtoReturn(Post post, RatingDto rating) {
 		return new PostDtoReturn(post.getId(),post.getUser().getId(), post.getUser().getUserName(), post.getUser().getAvatar(), post.getTitle(), post.getDescription(),
-				post.getCreationDate(), post.getAcademicYear(), avgRating, rating, post.getSubject().getSubjectName(), post.getSubject().getUniversity().getUniName());
+				post.getCreationDate(), post.getAcademicYear(), post.getAvgRating(), rating, post.getSubject().getSubjectName(), post.getSubject().getUniversity().getUniName());
 	}
 }
