@@ -28,26 +28,12 @@ CREATE TABLE IF NOT EXISTS FollowedUser (
    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
    followedId BIGINT NOT NULL,
    followerId BIGINT NOT NULL,
-   CONSTRAINT FollowedSubjectSubjectIdFK FOREIGN KEY (followedId)
+   CONSTRAINT FollowedUserFollowerIdFK FOREIGN KEY (followedId)
        REFERENCES Users (id)
        ON DELETE CASCADE,
-   CONSTRAINT FollowedSubjectUserIdFK FOREIGN KEY (followerId)
+   CONSTRAINT FollowedUserFollowedIdFK FOREIGN KEY (followerId)
        REFERENCES Users (id)
        ON DELETE CASCADE
-);
-
-
-
-CREATE TABLE IF NOT EXISTS FollowedUser (
-    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    followerId BIGINT NOT NULL,
-    followedId BIGINT NOT NULL,
-    CONSTRAINT FollowedUserFollowerIdFK FOREIGN KEY (followerId)
-                            REFERENCES Users (id)
-                            ON DELETE CASCADE,
-    CONSTRAINT FollowedUserFollowedIdFK FOREIGN KEY (followedId)
-                            REFERENCES Users (id)
-                            ON DELETE CASCADE
 );
 
 
@@ -69,8 +55,8 @@ CREATE TABLE IF NOT EXISTS Subject (
                             ON DELETE CASCADE
 );
 
-INSERT INTO Subject (subjectname, universityid) VALUES ('Teoría da Computación', 1);
-INSERT INTO Subject (subjectname, universityid) VALUES ('Lexislación e Seguridade Informática', 1);
+INSERT INTO Subject (subjectname, universityid) VALUES ('Teoria da Computacion', 1);
+INSERT INTO Subject (subjectname, universityid) VALUES ('Lexislacion e Seguridade Informatica', 1);
 
 CREATE TABLE IF NOT EXISTS FollowedSubject (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -90,8 +76,9 @@ CREATE TABLE IF NOT EXISTS Post (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     creationDate DATETIME NOT NULL,
-    academicYear VARCHAR(255) NOT NULL,
+    academicYear INT NOT NULL,
     userId VARCHAR(255) NOT NULL,
+    universityId BIGINT NOT NULL,
     subjectId BIGINT NOT NULL,
     avgRating DECIMAL(2, 1) NOT NULL,
     CONSTRAINT PostUserIdFK FOREIGN KEY (userId)

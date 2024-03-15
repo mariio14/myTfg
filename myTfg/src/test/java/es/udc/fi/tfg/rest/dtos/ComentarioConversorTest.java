@@ -69,7 +69,7 @@ public class ComentarioConversorTest {
         }
     }
     private Post getValidPost(){
-        return new Post(getValidUser(), "titulo", "description", "2022/2023", LocalDateTime.now(), new Subject("name", new University("name")));
+        return new Post(getValidUser(), "titulo", "description", 2023, LocalDateTime.now(), new Subject("name", new University("name")), new BigDecimal(0));
     }
     private Users getValidUser(){
         return new Users("nombre", "pass", "a", "b", "d@gmail.com");

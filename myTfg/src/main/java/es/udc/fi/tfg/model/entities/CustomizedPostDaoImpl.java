@@ -38,28 +38,42 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Slice<Post> find(String keywords, String minYear, String maxYear, String order, int page, int size) {
+    public Slice<Post> find(String keywords, Long universityId, Long subjectId, int minYear, int maxYear, String order, int page, int size) {
 
         String[] tokens = getTokens(keywords);
         String queryString = "SELECT p FROM Post p";
 
-        if (tokens.length > 0 || minYear != null || maxYear != null) {
+        if (tokens.length > 0 || minYear != 0 || maxYear != 0 || universityId != null || subjectId != null) {
             queryString += " WHERE ";
         }
 
-        if (minYear != null) {
-            queryString += "p.year >= :minYear";
+        if (minYear != 0) {
+            queryString += "p.academicYear >= :minYear";
         }
 
-        if (maxYear != null) {
-            if (minYear != null) {
+        if (maxYear != 0) {
+            if (minYear != 0) {
                 queryString += " AND ";
             }
-            queryString += "p.year <= :maxYear";
+            queryString += "p.academicYear <= :maxYear";
+        }
+
+        if (universityId != null) {
+            if (minYear != 0 || maxYear != 0) {
+                queryString += " AND ";
+            }
+            queryString += "p.university.id = :universityId";
+        }
+
+        if (subjectId != null) {
+            if (minYear != 0 || maxYear != 0 || universityId != null) {
+                queryString += " AND ";
+            }
+            queryString += "p.subject.id = :subjectId";
         }
 
         if (tokens.length != 0) {
-            if (minYear != null || maxYear != null) {
+            if (minYear != 0 || maxYear != 0 || universityId != null || subjectId != null) {
                 queryString += " AND ";
             }
 
@@ -88,12 +102,20 @@ public class CustomizedPostDaoImpl implements CustomizedPostDao {
 
         Query query = entityManager.createQuery(queryString).setFirstResult(page*size).setMaxResults(size+1);
 
-        if (minYear != null) {
-            query.setParameter("minPrice", minYear);
+        if (universityId != null) {
+            query.setParameter("universityId", universityId);
         }
 
-        if (maxYear != null) {
-            query.setParameter("maxPrice", maxYear);
+        if (subjectId != null) {
+            query.setParameter("subjectId", subjectId);
+        }
+
+        if (minYear != 0) {
+            query.setParameter("minYear", minYear);
+        }
+
+        if (maxYear != 0) {
+            query.setParameter("maxYear", maxYear);
         }
 
         if (tokens.length != 0) {

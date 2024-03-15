@@ -26,11 +26,13 @@ public class Post {
     /** The description. */
     private String description;
 
-    private String academicYear;
+    private int academicYear;
 
     private LocalDateTime creationDate;
 
     private Subject subject;
+
+    private University university;
 
     private BigDecimal avgRating;
 
@@ -45,13 +47,14 @@ public class Post {
      */
     public Post(){}
 
-    public Post(Users user, String title, String description, String academicYear, LocalDateTime creationDate, Subject subject, BigDecimal avgRating) {
+    public Post(Users user, String title, String description, int academicYear, LocalDateTime creationDate, Subject subject, BigDecimal avgRating) {
         this.user = user;
         this.title = title;
         this.description = description;
         this.academicYear = academicYear;
         this.creationDate = creationDate;
         this.subject = subject;
+        this.university = subject.getUniversity();
         this.avgRating = avgRating;
     }
 
@@ -136,12 +139,22 @@ public class Post {
         this.creationDate = creationDate;
     }
 
-    public String getAcademicYear() {
+    public int getAcademicYear() {
         return academicYear;
     }
 
-    public void setAcademicYear(String academicYear) {
+    public void setAcademicYear(int academicYear) {
         this.academicYear = academicYear;
+    }
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "universityId")
+    public University getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(University university) {
+        this.university = university;
     }
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

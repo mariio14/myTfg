@@ -47,7 +47,7 @@ public class PostServiceImpl implements PostService  {
             throw new InstanceNotFoundException("Asignatura no encontrada", subject);
         }
 
-        post = new Post(user, titulo, description, academicYear, LocalDateTime.now(), subject.get(), new BigDecimal(0));
+        post = new Post(user, titulo, description, Integer.parseInt(academicYear.split("/")[0]), LocalDateTime.now(), subject.get(), new BigDecimal(0));
 
         postDao.save(post);
         return post;
@@ -88,7 +88,7 @@ public class PostServiceImpl implements PostService  {
 
         post.setTitle(titulo);
         post.setDescription(descripcion);
-        post.setAcademicYear(academicYear);
+        post.setAcademicYear(Integer.parseInt(academicYear.split("/")[0]));
 
         return post;
 
@@ -110,9 +110,16 @@ public class PostServiceImpl implements PostService  {
     }
 
     @Override
-    public Block<Post> findPosts(String keywords, String minYear, String maxYear, String order, int page, int size) {
+    public Block<Post> findPosts(String keywords, Long universityId, Long subjectId, String minYear, String maxYear, String order, int page, int size) {
 
-        Slice<Post> slice = postDao.find(keywords, minYear, maxYear, order, page, size);
+        int minYear2, maxYear2;
+        if (minYear != null) minYear2 = Integer.parseInt(minYear.split("/")[0]);
+        else minYear2 = 0;
+        if (maxYear != null)
+            maxYear2 = Integer.parseInt(maxYear.split("/")[0]);
+        else maxYear2 = 0;
+
+        Slice<Post> slice = postDao.find(keywords, universityId, subjectId, minYear2, maxYear2, order, page, size);
 
         return new Block<>(slice.getContent(), slice.hasNext());
 

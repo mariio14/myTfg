@@ -26,7 +26,7 @@ public interface PostService {
 	 Post uploadPost(Long userId, String titulo, String descripcion, String academicYear, Long subjectId) throws InstanceNotFoundException;
 
 
-    Block<Post> findPosts(String keywords, String minYear, String maxYear, String order, int page, int size);
+    Block<Post> findPosts(String keywords, Long universityId, Long subjectId, String minYear, String maxYear, String order, int page, int size);
 
     /**
      * Find posts by user id.

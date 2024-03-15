@@ -173,6 +173,7 @@ const Post = () => {
 												value={uniId}
 												onChange={e => {setUniId(e.target.value);
 																dispatch(actions.findSubjects(e.target.value));
+																setSubjectId('');
 												}}
 												required
 											/>

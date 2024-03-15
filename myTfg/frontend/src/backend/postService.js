@@ -9,14 +9,16 @@ export const postear = (descripcion, titulo, subjectId, academicYear, onSuccess,
 appFetch(`/posts/upload`, fetchConfig('POST', {descripcion, titulo, subjectId, academicYear}), onSuccess, onErrors);
 
 
-export const obtenerFeed = ({keywords, minYear, maxYear, order, page},
+export const obtenerFeed = ({keywords, universityId, subjectId, minYear, maxYear, order, page},
                              onSuccess) => {
 
   let path = `/posts/feed?page=${page}`;
 
   path += keywords.length > 0 ? `&keywords=${encodeURIComponent(keywords)}` : "";
-  path += minYear ? `&minPrice=${minYear}` : "";
-  path += maxYear ? `&maxPrice=${maxYear}` : "";
+  path += universityId ? `&universityId=${universityId}` : "";
+  path += subjectId ? `&subjectId=${subjectId}` : "";
+  path += minYear ? `&minYear=${minYear}` : "";
+  path += maxYear ? `&maxYear=${maxYear}` : "";
   path += order ? `&order=${order}` : "";
 
 

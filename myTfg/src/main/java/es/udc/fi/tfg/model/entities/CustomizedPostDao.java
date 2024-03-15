@@ -10,6 +10,6 @@ import org.springframework.data.domain.Slice;
 public interface CustomizedPostDao {
 
 
-    Slice<Post> find(String keywords, String minYear, String maxYear, String order, int page, int size);
+    Slice<Post> find(String keywords, Long universityId, Long subjectId, int minYear, int maxYear, String order, int page, int size);
 
 }

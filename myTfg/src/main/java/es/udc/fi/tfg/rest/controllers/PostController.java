@@ -82,13 +82,13 @@ public class PostController {
 
 
     @GetMapping("/feed")
-    public BlockDto<PostDto> findPosts(@RequestParam(required=false) String keywords, @RequestParam(required=false) String minYear,
-                                       @RequestParam(required=false) String maxYear,
-                                       @RequestParam(required=false) String order,
+    public BlockDto<PostDto> findPosts(@RequestParam(required=false) String keywords, @RequestParam(required=false) Long universityId,
+                                       @RequestParam(required=false) Long subjectId, @RequestParam(required=false) String minYear,
+                                       @RequestParam(required=false) String maxYear, @RequestParam(required=false) String order,
                                        @RequestParam(defaultValue="0") int page) {   //Meter universityId y subjectId
 
         Block<Post> postBlock = postService.findPosts(keywords != null ? keywords.trim() : null,
-                minYear, maxYear, order, page, 2);
+                universityId, subjectId, minYear, maxYear, order, page, 2);
 
         List<PostDto> postDtoList = new ArrayList<>();
 

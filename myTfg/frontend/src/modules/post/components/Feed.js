@@ -40,7 +40,7 @@ const Feed = () => {
 									<div className="post-content" style={{ width: '100%', display: 'block' }}>
 										<div className="post-text" >
 											<div className="post-text-info">
-												<h3 data-testid={`post-category-${idx}`}>{selectors.getCategoryName(universities, post.categoryId)}</h3><h3 data-testid={`post-price-${idx}`}>{post.academicYear}</h3>
+												<h3 data-testid={`post-category-${idx}`}>{post.uniName}</h3><h3 data-testid={`post-price-${idx}`}>{post.academicYear}</h3>
 											</div>
 										</div>
 									</div>
