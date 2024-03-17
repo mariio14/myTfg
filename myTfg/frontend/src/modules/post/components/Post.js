@@ -18,45 +18,28 @@ const Post = () => {
 	const [academicYear, setAcademicYear] = useState('');
 	const [uniId, setUniId] = useState('');
 	const [subjectId, setSubjectId] = useState('');
-    const [mode, setMode] = useState('Producto');
+	const [files, setFiles] = useState();
 	const [backendErrors, setBackendErrors] = useState(null);
     
     let form;
 
-
-	const handleFileRead =  async (event) => {
-		const file = event.target.files;
-		const base64 = [];
-		for(let i=0; i<file.length; i++){
-			base64.push(await convertBase64(file[i]));
-
-		}
-		//setImages(base64);
+	const handleFileRead = (event) => {
+		setFiles(event.target.files[0])
 	}
 
-	let convertBase64 = (file) => {
-		return new Promise((resolve, reject) => {
-			const fileReader = new FileReader();
-			fileReader.readAsDataURL(file)
-			fileReader.onload = () => {
-				resolve(fileReader.result);
-			}
-			fileReader.onerror = (error) => {
-				reject(error);
-			}
-		})
-	}
     const handleSubmit = event => {
 
         event.preventDefault();
 
-
         if (form.checkValidity()) {
+			const formData = new FormData();
+			formData.append('files', files);
+			formData.append('titulo', titulo);
+			formData.append('descripcion', descripcion);
+			formData.append('academicYear', academicYear);
+			formData.append('subjectId', subjectId);
             dispatch(actions.postear(
-                titulo,
-                descripcion,
-                uniId,
-				academicYear,
+                formData,
                 () => {
 					navigate('/*');
 				},
@@ -80,18 +63,6 @@ const Post = () => {
 			            <div className="card bg-darkgray rounded-3">
 			                <h5 className="card-header bg-black">
 			                    <div className="btn-group" role="group">
-                  					<button
-                    					className={`btn btn-dark ${mode === 'Producto' ? 'active' : ''}`}
-                    					onClick={() => setMode('Producto')}
-										data-testid="post-button-product">
-                    					Producto
-                  					</button>
-                  				<button
-                    				className={`btn btn-dark ${mode === 'Cupón' ? 'active' : ''}`}
-                    					onClick={() => setMode('Cupón')}
-										data-testid="post-button-cupon">
-                    					Cupón
-                  					</button>
                 			</div>
 			                </h5>
 			                <div className="card-body">
@@ -153,12 +124,14 @@ const Post = () => {
 									
 			                        <div className="form-group col">
 			                        		<label htmlFor="formFileMultiple" className="col-md-12 col-form-label">
-				                                Imagen
+				                                Fichero(s)
 				                            </label>
-										
+
 										<div className="col-md-6">
-											<input className="form-control" data-testid="post-image-pick" type="file" id="formFileMultiple" multiple onChange={handleFileRead}/>
-										</div>	
+											<input className="form-control" data-testid="post-image-pick" type="file" id="formFileMultiple"
+												   name="formFileMultiple" multiple required onChange={handleFileRead}/>
+										</div>
+
 										
 									</div>
 									<div className="form-group col">

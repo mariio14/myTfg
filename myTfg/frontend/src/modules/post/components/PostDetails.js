@@ -1,16 +1,18 @@
 import * as selectors from "../selectors";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../actions';
 import { RatingStars } from "../../ratings"
 import { AverageRating } from "../../ratings"
 import users from "../../users";
 import { Comentarios } from "../../comments";
+import {Avatar} from "@mui/material";
 
 const PostDetails = () => {
 
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const { id } = useParams();
 	const post = useSelector(selectors.getPost);
 	const universities = useSelector(selectors.getUniversities);
@@ -46,6 +48,11 @@ const PostDetails = () => {
 	            dispatch(actions.followPost(Number(id)));
         }
 	};
+
+	const handleUserClick = (id) => {
+		const path = `/users/${id}`;
+		navigate(path);
+	}
 	
 	const isUserRating = (userId) => {
 		return userIdReal === userId;
@@ -84,6 +91,10 @@ const PostDetails = () => {
 											<h2 data-testid="post-details-title">
 												{post.titulo}
 											</h2>
+											<div className='avatar_div' style={{ display: 'flex', alignItems: 'center' }} data-testid={'avatar'} onClick={() => handleUserClick(post.userId)}>
+												<Avatar alt="Remy Sharp" src={"data:image/jpeg;base64," + post.avatar} sx={{ width: 45, height: 45 }}/>
+												<h3 data-testid={'post-username'} onClick={() => handleUserClick(post.id)}>{post.userName}</h3>
+											</div>
 											<hr></hr>
 											<div className="post-text-info">
 												<h4 data-testid="post-details-category">{post.uniName}</h4>

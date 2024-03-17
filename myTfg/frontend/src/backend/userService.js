@@ -79,3 +79,12 @@ export const changePassword = (
     onSuccess,
     onErrors
   );
+
+export const userProfile = (id, onSuccess) =>
+  appFetch(`/users/${id}`, fetchConfig("GET"),onSuccess);
+
+export const followUser = (id, onSuccess) =>
+    appFetch(`/users/follow/${id}`, fetchConfig("POST"),onSuccess);
+
+export const unfollowUser = (id, onSuccess) =>
+    appFetch(`/users/unfollow/${id}`, fetchConfig("DELETE"),onSuccess);

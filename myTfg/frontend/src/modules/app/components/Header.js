@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import users from '../../users';
 import notification from '../../notification';
 import { Avatar } from '@mui/material';
@@ -10,9 +10,11 @@ import Badge from '@mui/material/Badge';
 const Header = () => {
 
   const dispatch = useDispatch();
+    const navigate = useNavigate();
   const userName = useSelector(users.selectors.getUserName);
   const avatar = useSelector(users.selectors.getAvatar);
   const notifications = useSelector(notification.selectors.getNotReadNotifications);
+  const userId = useSelector(users.selectors.getUserId)
     
   useEffect(() => {
 	  if(userName)
@@ -54,7 +56,7 @@ const Header = () => {
             	</Link>
     		  </li>
               <li className="nav-item">
-                <Avatar alt="Remy Sharp" src={"data:image/jpeg;base64," + avatar} sx={{ width: 45, height: 45 }}/>
+                <Avatar alt="Remy Sharp" src={"data:image/jpeg;base64," + avatar} sx={{ width: 45, height: 45 }} onClick={() => navigate(`/users/${userId}`)}/>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/users/logout">

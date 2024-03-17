@@ -3,7 +3,8 @@ import {combineReducers} from 'redux';
 import * as actionTypes from './actionTypes';
 
 const initialState = {
-    user: null
+    user: null,
+    userProfile: null
 };
 
 const user = (state = initialState.user, action) => {
@@ -29,8 +30,20 @@ const user = (state = initialState.user, action) => {
 
 }
 
+const userProfile = (state = initialState.userProfile, action) => {
+
+    switch (action.type){
+        case actionTypes.USER_PROFILE_COMPLETED:
+            return action.userProfile;
+
+        default:
+            return state
+    }
+}
+
 const reducer = combineReducers({
-    user
+    user,
+    userProfile
 });
 
 export default reducer;

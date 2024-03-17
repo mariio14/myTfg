@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { useSelector } from 'react-redux';
-import users, { Login, SignUp, UpdateProfile, ChangePassword, Logout } from '../../users';
+import users, {Login, SignUp, UpdateProfile, ChangePassword, Logout, UserProfile} from '../../users';
 import Home from "./Home";
 import { Notifications } from "../../notification";
 import {Post, PostDetails, UpdatePost} from "../../post";
@@ -14,7 +14,6 @@ const Body = () => {
 
 	const loggedIn = useSelector(users.selectors.isLoggedIn);
 
-	//ojo, el de users/createPost necesita tener el loggedIn, pero eso lo pondre luego
 	return (
 		<Routes>
 			<Route path="/*" element={<Home />} />
@@ -28,6 +27,7 @@ const Body = () => {
 			{loggedIn && <Route path="/users/updatePost/:id" element={<UpdatePost />} />}
 			{loggedIn && <Route path="/users/myFeed" element={<MyFeed />} />}
 			{<Route path="/feed/posts/:id" element={<PostDetails />} />}
+			{<Route path="/users/:id" element={<UserProfile />} />}
 		</Routes>
 	);
 };

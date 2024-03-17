@@ -14,6 +14,7 @@ import es.udc.fi.tfg.rest.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -35,10 +36,14 @@ public class PostController {
 
     @PostMapping("/upload")
     public PostDto uploadPost(@RequestAttribute Long userId,
-                              @Validated @RequestBody UploadPostParamsDto params)
+                              @RequestParam("files") MultipartFile file,
+                              @RequestParam("titulo") String titulo,
+                              @RequestParam("descripcion") String descripcion,
+                              @RequestParam("academicYear") String academicYear,
+                              @RequestParam("subjectId") String subjectId)
             throws InstanceNotFoundException {
 
-        Post post = postService.uploadPost(userId,params.getTitulo(),params.getDescripcion(), params.getAcademicYear(), params.getSubjectId());
+        Post post = postService.uploadPost(userId,titulo,descripcion,academicYear, Long.valueOf(subjectId));
 
         return PostConversor.toPostDto(post);
     }
@@ -82,7 +87,7 @@ public class PostController {
 
 
     @GetMapping("/feed")
-    public BlockDto<PostDto> findPosts(@RequestParam(required=false) String keywords, @RequestParam(required=false) Long universityId,
+    public BlockDto<PostFeedDto> findPosts(@RequestParam(required=false) String keywords, @RequestParam(required=false) Long universityId,
                                        @RequestParam(required=false) Long subjectId, @RequestParam(required=false) String minYear,
                                        @RequestParam(required=false) String maxYear, @RequestParam(required=false) String order,
                                        @RequestParam(defaultValue="0") int page) {   //Meter universityId y subjectId
@@ -90,10 +95,10 @@ public class PostController {
         Block<Post> postBlock = postService.findPosts(keywords != null ? keywords.trim() : null,
                 universityId, subjectId, minYear, maxYear, order, page, 2);
 
-        List<PostDto> postDtoList = new ArrayList<>();
+        List<PostFeedDto> postDtoList = new ArrayList<>();
 
         for (Post post : postBlock.getItems()) {
-            PostDto postDto = PostConversor.toPostDto(post);
+            PostFeedDto postDto = PostConversor.toPostFeedDto(post);
             postDtoList.add(postDto);
         }
 

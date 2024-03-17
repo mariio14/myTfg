@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import * as actions from "../actions";
 import React from 'react';
 import { Pager } from "../../common";
+import {Avatar} from "@mui/material";
 
 const Feed = () => {
 
@@ -15,6 +16,11 @@ const Feed = () => {
 
 	const navigatetoPostDetail = (id) => {
 		const path = `/feed/posts/${id}`;
+		navigate(path);
+	}
+
+	const handleUserClick = (id) => {
+		const path = `/users/${id}`;
 		navigate(path);
 	}
 
@@ -38,6 +44,10 @@ const Feed = () => {
 								onClick={() => navigatetoPostDetail(post.id)}>
 								<div className="Post_feed">
 									<div className="post-content" style={{ width: '100%', display: 'block' }}>
+										<div className='avatar_div' data-testid={'avatar'}>
+											<Avatar alt="Remy Sharp" src={"data:image/jpeg;base64," + post.avatar} sx={{ width: 45, height: 45 }}/>
+											<h3 data-testid={`post-category-${idx}`}>{post.userName}</h3>
+										</div>
 										<div className="post-text" >
 											<div className="post-text-info">
 												<h3 data-testid={`post-category-${idx}`}>{post.uniName}</h3><h3 data-testid={`post-price-${idx}`}>{post.academicYear}</h3>

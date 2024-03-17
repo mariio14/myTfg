@@ -15,3 +15,6 @@ export const getAvatar = state =>
 export const getUserId = state =>    
 	 isLoggedIn(state) ? getUser(state).id : null;
 
+export const getUserProfile = state =>
+	getModuleState(state).userProfile;
+

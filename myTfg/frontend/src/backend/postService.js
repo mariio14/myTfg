@@ -5,8 +5,8 @@ import {
 
 
 
-export const postear = (descripcion, titulo, subjectId, academicYear, onSuccess, onErrors) =>
-appFetch(`/posts/upload`, fetchConfig('POST', {descripcion, titulo, subjectId, academicYear}), onSuccess, onErrors);
+export const postear = (params, onSuccess, onErrors) =>
+appFetch(`/posts/upload`, fetchConfig('POST', params), onSuccess, onErrors);
 
 
 export const obtenerFeed = ({keywords, universityId, subjectId, minYear, maxYear, order, page},

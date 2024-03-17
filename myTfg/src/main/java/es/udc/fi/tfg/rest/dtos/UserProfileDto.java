@@ -31,10 +31,18 @@ public class UserProfileDto {
 
     private boolean followed;
 
+    private BlockDto<PostFeedDto> posts;
+
+    private int numFollowers;
+
+    private int numFollowed;
+
+
     public UserProfileDto() {
     }
 
-    public UserProfileDto(Long id, String userName, String firstName, String lastName, String email, String role, byte[] avatar, boolean followed) {
+    public UserProfileDto(Long id, String userName, String firstName, String lastName, String email, String role, byte[] avatar,
+                          boolean followed, BlockDto<PostFeedDto> posts, int numFollowers, int numFollowed) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -43,6 +51,9 @@ public class UserProfileDto {
         this.role = role;
         this.avatar = avatar;
         this.followed = followed;
+        this.posts = posts;
+        this.numFollowers = numFollowers;
+        this.numFollowed = numFollowed;
     }
 
     public Long getId() {
@@ -107,5 +118,29 @@ public class UserProfileDto {
 
     public void setFollowed(boolean followed) {
         this.followed = followed;
+    }
+
+    public BlockDto<PostFeedDto> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(BlockDto<PostFeedDto> posts) {
+        this.posts = posts;
+    }
+
+    public int getNumFollowers() {
+        return numFollowers;
+    }
+
+    public void setNumFollowers(int numFollowers) {
+        this.numFollowers = numFollowers;
+    }
+
+    public int getNumFollowed() {
+        return numFollowed;
+    }
+
+    public void setNumFollowed(int numFollowed) {
+        this.numFollowed = numFollowed;
     }
 }

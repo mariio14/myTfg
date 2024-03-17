@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Base64;
 import java.util.Locale;
 
+import es.udc.fi.tfg.model.services.PostService;
 import es.udc.fi.tfg.model.services.exceptions.*;
 import es.udc.fi.tfg.rest.dtos.*;
 import es.udc.fi.tfg.model.entities.Users;
@@ -47,6 +48,9 @@ public class UserController {
 	/** The user service. */
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private PostService postService;
 
 	/**
 	 * Handle incorrect login exception.
@@ -199,7 +203,8 @@ public class UserController {
 
 	@GetMapping("/{id}")
 	public UserProfileDto userProfile(@PathVariable("id") Long id, @RequestAttribute Long userId)  throws InstanceNotFoundException {
-		return UserConversor.toUserProfileDto(userService.getUserProfile(id), userService.userFollows(userId,id));
+		return UserConversor.toUserProfileDto(userService.getUserProfile(id), userService.userFollows(userId,id),
+				postService.findPostsByUserId(id, 0,2));
 	}
 
 	@PostMapping("/follow/{id}")

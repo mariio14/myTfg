@@ -3,10 +3,9 @@ import backend from '../../backend';
 import * as selectors from "./selectors";
 
 
-export const postear = (titulo, descripcion , subjectId, academicYear, onSuccess, onErrors) => dispatch =>
-	backend.postService.postear(descripcion, titulo, subjectId, academicYear,
-		onSuccess
-		,onErrors);
+export const postear = (params, onSuccess, onErrors) => dispatch =>
+	backend.postService.postear(params,
+		onSuccess, onErrors);
 
 const getFeedCompleted =  feed => ({
 	type: actionTypes.GET_FEED_COMPLETED,

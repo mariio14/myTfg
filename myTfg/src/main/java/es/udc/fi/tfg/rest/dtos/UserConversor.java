@@ -1,8 +1,12 @@
 package es.udc.fi.tfg.rest.dtos;
 
+import es.udc.fi.tfg.model.entities.Post;
 import es.udc.fi.tfg.model.entities.Users;
+import es.udc.fi.tfg.model.services.Block;
 
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * The Class UserConversor.
@@ -63,9 +67,18 @@ public class UserConversor {
 
 	}
 
-	public static final UserProfileDto toUserProfileDto(Users user, boolean followed) {
+	public static final UserProfileDto toUserProfileDto(Users user, boolean followed, Block<Post> posts) {
+
+		List<PostFeedDto> postDtoList = new ArrayList<>();
+		for (Post post : posts.getItems()) {
+			PostFeedDto postDto = PostConversor.toPostFeedDto(post);
+			postDtoList.add(postDto);
+		}
+
+		BlockDto<PostFeedDto> block= new BlockDto<>(postDtoList, posts.getExistMoreItems());
+
 		return new UserProfileDto(user.getId(), user.getUserName(), user.getFirstName(), user.getLastName(), user.getEmail(),
-				user.getRole().toString(),user.getAvatar(), followed);
+				user.getRole().toString(),user.getAvatar(), followed, block, user.getFollowerUsers().size(), user.getFollowedUsers().size());
 	}
 
 }

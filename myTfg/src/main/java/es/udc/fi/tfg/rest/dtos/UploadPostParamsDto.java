@@ -6,6 +6,7 @@ import java.util.List;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The Class UpdatePostParamsDto.
@@ -23,6 +24,8 @@ public class UploadPostParamsDto {
 	private Long subjectId;
 	
 	String academicYear;
+
+	private MultipartFile files;
 
 
 	/**
@@ -82,5 +85,13 @@ public class UploadPostParamsDto {
 
 	public void setAcademicYear(String academicYear) {
 		this.academicYear = academicYear;
+	}
+
+	public MultipartFile getFiles() {
+		return files;
+	}
+
+	public void setFiles(MultipartFile files) {
+		this.files = files;
 	}
 }
