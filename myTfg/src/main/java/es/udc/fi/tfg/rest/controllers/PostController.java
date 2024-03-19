@@ -2,6 +2,7 @@ package es.udc.fi.tfg.rest.controllers;
 
 
 import es.udc.fi.tfg.model.common.exceptions.InstanceNotFoundException;
+import es.udc.fi.tfg.model.entities.Apunte;
 import es.udc.fi.tfg.model.entities.Post;
 import es.udc.fi.tfg.model.entities.Rating;
 import es.udc.fi.tfg.model.entities.Subject;
@@ -16,9 +17,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -36,16 +41,20 @@ public class PostController {
 
     @PostMapping("/upload")
     public PostDto uploadPost(@RequestAttribute Long userId,
-                              @RequestParam("files") MultipartFile file,
+                              @RequestParam Map<String, MultipartFile> files,
                               @RequestParam("titulo") String titulo,
                               @RequestParam("descripcion") String descripcion,
                               @RequestParam("academicYear") String academicYear,
                               @RequestParam("subjectId") String subjectId)
-            throws InstanceNotFoundException {
+            throws InstanceNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeyException {
 
-        Post post = postService.uploadPost(userId,titulo,descripcion,academicYear, Long.valueOf(subjectId));
+        List<MultipartFile> fileList = new ArrayList<>(files.values());
 
-        return PostConversor.toPostDto(post);
+        Post post = postService.uploadPost(userId,titulo,descripcion,academicYear, Long.valueOf(subjectId), fileList);
+
+        List<Apunte> apunteList = new ArrayList<>(post.getApuntes());
+
+        return PostConversor.toPostDto(post, apunteList);
     }
 
 
@@ -58,13 +67,14 @@ public class PostController {
      */
     @GetMapping("/myFeed")
     public BlockDto<PostDto> findPostsByUserId(@RequestAttribute Long userId,
-                                               @RequestParam(defaultValue = "0") int page) {
+                                               @RequestParam(defaultValue = "0") int page) throws IOException {
 
         Block<Post> postBlock = postService.findPostsByUserId(userId, page, 2);
 
         List<PostDto> postDtoList = new ArrayList<>();
         for (Post post : postBlock.getItems()) {
-            PostDto postDto = PostConversor.toPostDto(post);
+            List<Apunte> apuntes = postService.findApuntesByPost(post.getId());
+            PostDto postDto = PostConversor.toPostDto(post, apuntes);
             postDtoList.add(postDto);
         }
         return new BlockDto<>(postDtoList, postBlock.getExistMoreItems());
@@ -73,13 +83,14 @@ public class PostController {
 
     @GetMapping("/feed/{userId}")
     public BlockDto<PostDto> findPostsByOtherUserId(@PathVariable Long userId,
-                                               @RequestParam(defaultValue = "0") int page) {
+                                               @RequestParam(defaultValue = "0") int page) throws IOException {
 
         Block<Post> postBlock = postService.findPostsByUserId(userId, page, 2);
 
         List<PostDto> postDtoList = new ArrayList<>();
         for (Post post : postBlock.getItems()) {
-            PostDto postDto = PostConversor.toPostDto(post);
+            List<Apunte> apuntes = postService.findApuntesByPost(post.getId());
+            PostDto postDto = PostConversor.toPostDto(post,apuntes);
             postDtoList.add(postDto);
         }
         return new BlockDto<>(postDtoList, postBlock.getExistMoreItems());
@@ -90,7 +101,7 @@ public class PostController {
     public BlockDto<PostFeedDto> findPosts(@RequestParam(required=false) String keywords, @RequestParam(required=false) Long universityId,
                                        @RequestParam(required=false) Long subjectId, @RequestParam(required=false) String minYear,
                                        @RequestParam(required=false) String maxYear, @RequestParam(required=false) String order,
-                                       @RequestParam(defaultValue="0") int page) {   //Meter universityId y subjectId
+                                       @RequestParam(defaultValue="0") int page) throws IOException {   //Meter universityId y subjectId
 
         Block<Post> postBlock = postService.findPosts(keywords != null ? keywords.trim() : null,
                 universityId, subjectId, minYear, maxYear, order, page, 2);
@@ -119,11 +130,12 @@ public class PostController {
     public PostDto updatePost(@RequestAttribute Long userId, @PathVariable Long id,
                               @Validated @RequestBody UploadPostParamsDto params)
 
-            throws InstanceNotFoundException {
+            throws InstanceNotFoundException, IOException {
 
         Post post = postService.updatePost(userId, id, params.getTitulo(),params.getDescripcion(),params.getAcademicYear(), params.getSubjectId());
 
-        return PostConversor.toPostDto(post);
+        List<Apunte> apunteList = new ArrayList<>(post.getApuntes());
+        return PostConversor.toPostDto(post, apunteList);
     }
 
 
@@ -150,7 +162,7 @@ public class PostController {
     @GetMapping("/{id}")
     public PostDtoReturn findPostById(@PathVariable Long id,
                                       @RequestAttribute(required = false) Long userId,
-                                      @RequestParam(defaultValue = "0") int page) throws InstanceNotFoundException {
+                                      @RequestParam(defaultValue = "0") int page) throws InstanceNotFoundException, IOException {
 
         Post post = postService.findPostById(id);
 

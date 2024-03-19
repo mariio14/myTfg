@@ -18,13 +18,13 @@ const Post = () => {
 	const [academicYear, setAcademicYear] = useState('');
 	const [uniId, setUniId] = useState('');
 	const [subjectId, setSubjectId] = useState('');
-	const [files, setFiles] = useState();
+	const [files, setFiles] = useState([]);
 	const [backendErrors, setBackendErrors] = useState(null);
     
     let form;
 
 	const handleFileRead = (event) => {
-		setFiles(event.target.files[0])
+		setFiles([...event.target.files]);
 	}
 
     const handleSubmit = event => {
@@ -33,7 +33,10 @@ const Post = () => {
 
         if (form.checkValidity()) {
 			const formData = new FormData();
-			formData.append('files', files);
+			//formData.append('files', files);
+			files.forEach((file, index) => {
+				formData.append(`file${index}`, file);
+			});
 			formData.append('titulo', titulo);
 			formData.append('descripcion', descripcion);
 			formData.append('academicYear', academicYear);
@@ -130,7 +133,11 @@ const Post = () => {
 										<div className="col-md-6">
 											<input className="form-control" data-testid="post-image-pick" type="file" id="formFileMultiple"
 												   name="formFileMultiple" multiple required onChange={handleFileRead}/>
+											<div className="invalid-feedback">
+												Campo requerido
+											</div>
 										</div>
+
 
 										
 									</div>

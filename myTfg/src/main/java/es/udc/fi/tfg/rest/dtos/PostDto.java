@@ -36,7 +36,9 @@ public class PostDto {
 
     private LocalDateTime creationDate;
 
-    private Set<Apunte> files;
+    private List<byte []> files;
+
+    private int size;
 
 
     /**
@@ -46,7 +48,8 @@ public class PostDto {
 
 
 
-    public PostDto(Long id,Long userId, String titulo, String descripcion, String academicYear, LocalDateTime creationDate, Set<Apunte> files){
+    public PostDto(Long id,Long userId, String titulo, String descripcion, String academicYear, LocalDateTime creationDate,
+                   List<byte []> files, int size){
         this.id=id;
         this.userId=userId;
         this.titulo=titulo;
@@ -54,6 +57,7 @@ public class PostDto {
         this.academicYear=academicYear;
         this.creationDate= creationDate;
         this.files= files;
+        this.size = size;
     }
 
     /**
@@ -135,11 +139,19 @@ public class PostDto {
         this.creationDate = creationDate;
     }
 
-    public Set<Apunte> getFiles() {
+    public List<byte []> getFiles() {
         return files;
     }
 
-    public void setFiles(Set<Apunte> files) {
+    public void setFiles(List<byte []> files) {
         this.files = files;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 }

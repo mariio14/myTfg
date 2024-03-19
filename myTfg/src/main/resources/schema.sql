@@ -92,7 +92,10 @@ CREATE TABLE IF NOT EXISTS Post (
 
 CREATE TABLE IF NOT EXISTS Apunte (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    path VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    contentType VARCHAR(255) NOT NULL,
+    size BIGINT NOT NULL,
+    storagePath VARCHAR(255) NOT NULL,
     postId BIGINT NOT NULL,
     CONSTRAINT ApuntePostIdFK FOREIGN KEY (postId)
                             REFERENCES Post (id)

@@ -1,6 +1,6 @@
 import * as selectors from "../selectors";
 import React, { useEffect, useState } from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from '../actions';
 import { RatingStars } from "../../ratings"
@@ -8,6 +8,7 @@ import { AverageRating } from "../../ratings"
 import users from "../../users";
 import { Comentarios } from "../../comments";
 import {Avatar} from "@mui/material";
+import download from 'downloadjs';
 
 const PostDetails = () => {
 
@@ -19,11 +20,15 @@ const PostDetails = () => {
 	const [isCopied, setIsCopied] = useState(false);
 	const loggedIn = useSelector(users.selectors.isLoggedIn);
 	const userIdReal = useSelector(users.selectors.getUserId);
+	var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(post.files)));
+	//<button onClick={downloadPDF}>Descargar PDF</button>
 
-
-	const handleCopyClick = () => {
-		navigator.clipboard.writeText(post.cupon);
-		setIsCopied(true);
+	const handleDownload = () => {
+		fetch(post.urls)
+			.then(response => response.blob())
+			.then(blob => {
+				download(blob, post.files);
+			});
 	};
 
 	useEffect(() => {
@@ -47,6 +52,31 @@ const PostDetails = () => {
 			else
 	            dispatch(actions.followPost(Number(id)));
         }
+	};
+
+	const onButtonClick = () => {
+		const pdfUrl = post.urls;
+
+		fetch(pdfUrl)
+			.then((response) => response.blob())
+			.then((blob) => {
+				const url = window.URL.createObjectURL(blob);
+				const link = document.createElement('a');
+				link.href = url;
+				link.setAttribute('download', 'nombre_del_archivo.pdf'); // Especifica el nombre del archivo descargado
+				document.body.appendChild(link);
+				link.click();
+				link.parentNode.removeChild(link);
+			});
+	};
+
+	const downloadPDF = () => {
+		const link = document.createElement('a');
+		link.href = "data:application/pdf;base64," + base64String;
+		link.download = post.fileNames; // Especifica el nombre del archivo
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
 	};
 
 	const handleUserClick = (id) => {
@@ -99,6 +129,11 @@ const PostDetails = () => {
 											<div className="post-text-info">
 												<h4 data-testid="post-details-category">{post.uniName}</h4>
 												<h4 data-testid="post-details-price">${post.precio}</h4>
+											</div>
+											<div>
+												<div>
+													<button onClick={handleDownload}>Descargar PDF</button>
+												</div>
 											</div>
 										</div>
 									</div>

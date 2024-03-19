@@ -1,13 +1,18 @@
 package es.udc.fi.tfg.model.services;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import es.udc.fi.tfg.model.common.exceptions.InstanceNotFoundException;
+import es.udc.fi.tfg.model.entities.Apunte;
 import es.udc.fi.tfg.model.entities.Post;
 import es.udc.fi.tfg.model.entities.Subject;
 import es.udc.fi.tfg.model.entities.University;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The Interface PostService.
@@ -23,7 +28,7 @@ public interface PostService {
      * @return the post
      * @throws InstanceNotFoundException the instance not found exception
      */
-	 Post uploadPost(Long userId, String titulo, String descripcion, String academicYear, Long subjectId) throws InstanceNotFoundException;
+	 Post uploadPost(Long userId, String titulo, String descripcion, String academicYear, Long subjectId, List<MultipartFile> files) throws InstanceNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeyException;
 
 
     Block<Post> findPosts(String keywords, Long universityId, Long subjectId, String minYear, String maxYear, String order, int page, int size);
@@ -62,4 +67,6 @@ public interface PostService {
 	public List<University> findAllUniversities();
 
 	public List<Subject> findAllSubjectsByUni(Long id);
+
+	public List<Apunte> findApuntesByPost(Long id);
 }

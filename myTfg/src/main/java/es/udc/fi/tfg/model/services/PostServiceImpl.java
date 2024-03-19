@@ -1,6 +1,14 @@
 package es.udc.fi.tfg.model.services;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fi.tfg.model.common.exceptions.InstanceNotFoundException;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * The type Post service.
@@ -34,10 +44,16 @@ public class PostServiceImpl implements PostService  {
     private SubjectDao subjectDao;
 
     @Autowired
+    private ApunteDao apunteDao;
+
+    @Autowired
     private UniversityDao universityDao;
 
+    @Autowired
+    private FileStorageService fileStorageService;
+
     @Override
-    public Post uploadPost(Long userId, String titulo, String description, String academicYear, Long subjectId) throws InstanceNotFoundException {
+    public Post uploadPost(Long userId, String titulo, String description, String academicYear, Long subjectId, List<MultipartFile> files) throws InstanceNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeyException {
 
         Users user = permissionChecker.checkUser(userId);
         Optional<Subject> subject = subjectDao.findById(subjectId);
@@ -50,6 +66,28 @@ public class PostServiceImpl implements PostService  {
         post = new Post(user, titulo, description, Integer.parseInt(academicYear.split("/")[0]), LocalDateTime.now(), subject.get(), new BigDecimal(0));
 
         postDao.save(post);
+
+        for(MultipartFile file : files){
+            fileStorageService.uploadFile(file);
+            /*String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+            // Define the storage path
+            Path destination = Paths.get("frontend/public").resolve(fileName).normalize().toAbsolutePath();
+
+            // Create the directory if it doesn't exist
+            Files.createDirectories(destination.getParent());
+
+            // Save the file
+            try (InputStream inputStream = file.getInputStream()) {
+                Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            Apunte apunte = new Apunte(fileName, file.getContentType(), file.getSize(), destination.toString(), post);
+            apunteDao.save(apunte);*/
+
+        }
         return post;
     }
 
@@ -110,6 +148,11 @@ public class PostServiceImpl implements PostService  {
     }
 
     @Override
+    public List<Apunte> findApuntesByPost(Long id) {
+        return apunteDao.findByPost_Id(id);
+    }
+
+    @Override
     public Block<Post> findPosts(String keywords, Long universityId, Long subjectId, String minYear, String maxYear, String order, int page, int size) {
 
         int minYear2, maxYear2;
@@ -144,5 +187,7 @@ public class PostServiceImpl implements PostService  {
         }
         return post.get();
     }
+
+
 
 }

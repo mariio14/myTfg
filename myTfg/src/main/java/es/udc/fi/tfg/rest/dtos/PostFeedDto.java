@@ -2,6 +2,7 @@ package es.udc.fi.tfg.rest.dtos;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PostFeedDto {
 
@@ -36,12 +37,14 @@ public class PostFeedDto {
 
     private String uniName;
 
+    private List<byte []> files;
+
     public PostFeedDto() {
     }
 
     public PostFeedDto(Long id, Long userId, String userName, byte[] avatar,
                        String titulo, String descripcion, String academicYear,
-                       LocalDateTime creationDate, BigDecimal avgRating, String subjectName, String uniName) {
+                       LocalDateTime creationDate, BigDecimal avgRating, String subjectName, String uniName, List<byte []> files) {
         this.id = id;
         this.userId = userId;
         this.userName = userName;
@@ -53,6 +56,7 @@ public class PostFeedDto {
         this.avgRating = avgRating;
         this.subjectName = subjectName;
         this.uniName = uniName;
+        this.files = files;
     }
 
     public Long getId() {
@@ -141,5 +145,13 @@ public class PostFeedDto {
 
     public void setUniName(String uniName) {
         this.uniName = uniName;
+    }
+
+    public List<byte[]> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<byte[]> files) {
+        this.files = files;
     }
 }

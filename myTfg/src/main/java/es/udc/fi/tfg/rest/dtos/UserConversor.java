@@ -4,6 +4,7 @@ import es.udc.fi.tfg.model.entities.Post;
 import es.udc.fi.tfg.model.entities.Users;
 import es.udc.fi.tfg.model.services.Block;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -67,7 +68,7 @@ public class UserConversor {
 
 	}
 
-	public static final UserProfileDto toUserProfileDto(Users user, boolean followed, Block<Post> posts) {
+	public static final UserProfileDto toUserProfileDto(Users user, boolean followed, Block<Post> posts) throws IOException {
 
 		List<PostFeedDto> postDtoList = new ArrayList<>();
 		for (Post post : posts.getItems()) {

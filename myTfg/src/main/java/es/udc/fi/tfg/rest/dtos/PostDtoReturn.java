@@ -47,13 +47,19 @@ public class PostDtoReturn {
 
 	private String uniName;
 
+	private byte [] files;
+
+	private List<String> fileNames;
+
+	private String urls;
+
 
 	public PostDtoReturn() {
 	}
 
 	public PostDtoReturn(Long id, Long userId, String userName, byte[] avatar, String titulo, String descripcion,
 						 LocalDateTime creationDate, String academicYear, BigDecimal avgRating, RatingDto rating,
-						 String subjectName, String uniName) {
+						 String subjectName, String uniName, byte [] files, List<String> fileNames, String urls) {
 		this.id = id;
 		this.userId = userId;
 		this.userName = userName;
@@ -66,6 +72,9 @@ public class PostDtoReturn {
 		this.rating = rating;
 		this.subjectName = subjectName;
 		this.uniName = uniName;
+		this.files = files;
+		this.fileNames = fileNames;
+		this.urls = urls;
 	}
 
 	public Long getId() {
@@ -162,5 +171,29 @@ public class PostDtoReturn {
 
 	public void setUniName(String uniName) {
 		this.uniName = uniName;
+	}
+
+	public byte[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(byte[] files) {
+		this.files = files;
+	}
+
+	public List<String> getFileNames() {
+		return fileNames;
+	}
+
+	public void setFileNames(List<String> fileNames) {
+		this.fileNames = fileNames;
+	}
+
+	public String getUrls() {
+		return urls;
+	}
+
+	public void setUrls(String urls) {
+		this.urls = urls;
 	}
 }

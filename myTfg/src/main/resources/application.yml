@@ -43,4 +43,9 @@ project:
   jwt:
     signKey: WzROun12eUiDvko3UrJ74gNeJz2TWEWPMTh6DxyE8HWXIf4hETUrkM4IUGqqHq66PuVS
     expirationMinutes: 1440
+minio:
+  access-key: admin
+  secret-key: password
+  url: http://localhost:9000
+  bucket-name: book-covers
 

@@ -1,5 +1,6 @@
 package es.udc.fi.tfg.rest.controllers;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.Base64;
 import java.util.Locale;
@@ -202,7 +203,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{id}")
-	public UserProfileDto userProfile(@PathVariable("id") Long id, @RequestAttribute Long userId)  throws InstanceNotFoundException {
+	public UserProfileDto userProfile(@PathVariable("id") Long id, @RequestAttribute Long userId) throws InstanceNotFoundException, IOException {
 		return UserConversor.toUserProfileDto(userService.getUserProfile(id), userService.userFollows(userId,id),
 				postService.findPostsByUserId(id, 0,2));
 	}
