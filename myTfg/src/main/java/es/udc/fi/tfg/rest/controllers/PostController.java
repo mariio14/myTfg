@@ -10,7 +10,9 @@ import es.udc.fi.tfg.model.services.Block;
 import es.udc.fi.tfg.model.services.CommentService;
 import es.udc.fi.tfg.model.services.PostService;
 import es.udc.fi.tfg.model.services.RatingService;
+import es.udc.fi.tfg.model.services.exceptions.AlreadyFollowingException;
 import es.udc.fi.tfg.model.services.exceptions.NoRatingException;
+import es.udc.fi.tfg.model.services.exceptions.NotFollowingException;
 import es.udc.fi.tfg.rest.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -186,5 +188,15 @@ public class PostController {
     @GetMapping("/subjects/{id}")
     public List<SubjectDto> findAllSubjects(@PathVariable Long id) {
         return SubjectConversor.toSubjectDtos(postService.findAllSubjectsByUni(id));
+    }
+
+    @PostMapping("/follow/{id}")
+    public void followSubject(@PathVariable Long id, @RequestAttribute Long userId) throws InstanceNotFoundException, AlreadyFollowingException {
+        postService.followSubject(userId, id);
+    }
+
+    @DeleteMapping("/unfollow/{id}")
+    public void unfollowSubject(@PathVariable Long id, @RequestAttribute Long userId) throws InstanceNotFoundException, NotFollowingException {
+        postService.unfollowSubject(userId, id);
     }
 }

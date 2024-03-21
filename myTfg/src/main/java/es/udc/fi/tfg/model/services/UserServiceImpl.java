@@ -174,7 +174,7 @@ public class UserServiceImpl implements UserService {
 		Optional<FollowedUser> optFollowedUser = followedUserDao.findByFollowed_IdAndFollower_Id(userToFollowId, userId);
 
 		if (!optFollowedUser.isEmpty()) {
-			throw new AlreadyFollowingException("Ya esta siguiendo a este post");
+			throw new AlreadyFollowingException("Ya esta siguiendo a este usuario");
 		}
 
 		FollowedUser followedUser = new FollowedUser(user, usersOptional.get());
@@ -196,7 +196,7 @@ public class UserServiceImpl implements UserService {
 		Optional<FollowedUser> optFollowedUser = followedUserDao.findByFollowed_IdAndFollower_Id(userId, userToUnfollowId);
 
 		if (optFollowedUser.isEmpty()) {
-			throw new NotFollowingException("No esta siguiendo a este post");
+			throw new NotFollowingException("No esta siguiendo a este usuario");
 		}
 
 		FollowedUser followedUser1 = optFollowedUser.get();

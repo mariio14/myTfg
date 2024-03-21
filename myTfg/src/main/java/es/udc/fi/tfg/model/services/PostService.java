@@ -12,6 +12,8 @@ import es.udc.fi.tfg.model.entities.Apunte;
 import es.udc.fi.tfg.model.entities.Post;
 import es.udc.fi.tfg.model.entities.Subject;
 import es.udc.fi.tfg.model.entities.University;
+import es.udc.fi.tfg.model.services.exceptions.AlreadyFollowingException;
+import es.udc.fi.tfg.model.services.exceptions.NotFollowingException;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -69,4 +71,8 @@ public interface PostService {
 	public List<Subject> findAllSubjectsByUni(Long id);
 
 	public List<Apunte> findApuntesByPost(Long id);
+
+	void followSubject(Long userId, Long subjectId) throws AlreadyFollowingException, InstanceNotFoundException;
+
+	void unfollowSubject(Long userId, Long subjectId) throws InstanceNotFoundException, NotFollowingException;
 }
