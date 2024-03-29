@@ -12,6 +12,7 @@ import es.udc.fi.tfg.model.entities.Apunte;
 import es.udc.fi.tfg.model.entities.Post;
 import es.udc.fi.tfg.model.entities.Subject;
 import es.udc.fi.tfg.model.entities.University;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -28,7 +29,7 @@ public interface PostService {
      * @return the post
      * @throws InstanceNotFoundException the instance not found exception
      */
-	 Post uploadPost(Long userId, String titulo, String descripcion, String academicYear, Long subjectId, List<MultipartFile> files) throws InstanceNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeyException;
+	 Post uploadPost(Long userId, String titulo, String descripcion, String academicYear, Long subjectId, List<MultipartFile> files, List<String> etiquetas) throws InstanceNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeyException;
 
 
     Block<Post> findPosts(String keywords, Long universityId, Long subjectId, String minYear, String maxYear, String order, int page, int size);
@@ -64,9 +65,11 @@ public interface PostService {
 	Post updatePost(Long userId,Long postId, String titulo, String descripcion, String academicYear, Long subjectId)
 			throws InstanceNotFoundException;
 
-	public List<University> findAllUniversities();
+	List<University> findAllUniversities();
 
-	public List<Subject> findAllSubjectsByUni(Long id);
+	List<Subject> findAllSubjectsByUni(Long id);
 
-	public List<Apunte> findApuntesByPost(Long id);
+	List<Apunte> findApuntesByPost(Long id);
+
+	Block<Post> findPostsByEtiquetaId(Long etiquetaId, int page, int size) throws InstanceNotFoundException;
 }

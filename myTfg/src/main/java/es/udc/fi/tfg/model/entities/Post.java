@@ -42,6 +42,8 @@ public class Post {
 
     private Set<Apunte> apuntes = new HashSet<>();
 
+    private Set<EtiquetaOfPost> etiquetas = new HashSet<>();
+
     /**
      * Instantiates a new post.
      */
@@ -205,5 +207,14 @@ public class Post {
 
     public void setApuntes(Set<Apunte> apuntes) {
         this.apuntes = apuntes;
+    }
+
+    @OneToMany(mappedBy="post")
+    public Set<EtiquetaOfPost> getEtiquetas() {
+        return etiquetas;
+    }
+
+    public void setEtiquetas(Set<EtiquetaOfPost> etiquetas) {
+        this.etiquetas = etiquetas;
     }
 }

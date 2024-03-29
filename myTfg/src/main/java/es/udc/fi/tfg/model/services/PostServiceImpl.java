@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import es.udc.fi.tfg.model.entities.*;
 
@@ -44,16 +46,25 @@ public class PostServiceImpl implements PostService  {
     private SubjectDao subjectDao;
 
     @Autowired
+    private NotificationDao notificationDao;
+
+    @Autowired
     private ApunteDao apunteDao;
 
     @Autowired
     private UniversityDao universityDao;
 
     @Autowired
+    private EtiquetaDao etiquetaDao;
+
+    @Autowired
+    private EtiquetaOfPostDao etiquetaOfPostDao;
+
+    @Autowired
     private FileStorageService fileStorageService;
 
     @Override
-    public Post uploadPost(Long userId, String titulo, String description, String academicYear, Long subjectId, List<MultipartFile> files) throws InstanceNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeyException {
+    public Post uploadPost(Long userId, String titulo, String description, String academicYear, Long subjectId, List<MultipartFile> files, List<String> etiquetas) throws InstanceNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeyException {
 
         Users user = permissionChecker.checkUser(userId);
         Optional<Subject> subject = subjectDao.findById(subjectId);
@@ -88,6 +99,35 @@ public class PostServiceImpl implements PostService  {
             apunteDao.save(apunte);*/
 
         }
+
+        for (FollowedUser follower: user.getFollowerUsers() ) {
+            Notification notification = new Notification(false, true, false, follower.getFollower(), post);
+            notificationDao.save(notification);
+        }
+
+        for (FollowedSubject follower: subject.get().getFollowedSubjects() ) {
+            Notification notification = new Notification(false, true, true, follower.getUser(), post);
+            notificationDao.save(notification);
+        }
+
+        for (String etiqueta: etiquetas) {
+            String[] parts = etiqueta.split("-");
+            String key = parts[0];
+            String value = parts[1];
+
+            Optional<Etiqueta> etiquetaOptional = etiquetaDao.findByKeyAndValue(key, value);
+
+            Etiqueta etiqueta1;
+            if (etiquetaOptional.isEmpty()) {
+                etiqueta1 = new Etiqueta(key, value);
+                etiquetaDao.save(etiqueta1);
+            }
+            else etiqueta1 = etiquetaOptional.get();
+
+            EtiquetaOfPost etiquetaOfPost = new EtiquetaOfPost(post,etiqueta1);
+            etiquetaOfPostDao.save(etiquetaOfPost);
+        }
+
         return post;
     }
 
@@ -153,6 +193,21 @@ public class PostServiceImpl implements PostService  {
     }
 
     @Override
+    public Block<Post> findPostsByEtiquetaId(Long etiquetaId, int page, int size) throws InstanceNotFoundException {
+
+        Optional<Etiqueta> etiquetaOptional = etiquetaDao.findById(etiquetaId);
+        if (etiquetaOptional.isEmpty())
+            throw new InstanceNotFoundException("project.entities.etiqueta", etiquetaId);
+
+        Slice<EtiquetaOfPost> slice = etiquetaOfPostDao.findByEtiquetaId(etiquetaId, PageRequest.of(page, size));
+
+        List<Post> posts = slice.getContent().stream()
+                .map(EtiquetaOfPost::getPost).toList();
+
+        return new Block<>(posts, slice.hasNext());
+    }
+
+    @Override
     public Block<Post> findPosts(String keywords, Long universityId, Long subjectId, String minYear, String maxYear, String order, int page, int size) {
 
         int minYear2, maxYear2;
@@ -187,7 +242,5 @@ public class PostServiceImpl implements PostService  {
         }
         return post.get();
     }
-
-
 
 }

@@ -2,7 +2,9 @@ DROP TABLE Apunte;
 DROP TABLE Rating;
 DROP TABLE Notification;
 DROP TABLE Comentario;
+DROP TABLE IF EXISTS EtiquetaOfPost;
 DROP TABLE Post;
+DROP TABLE IF EXISTS Etiqueta;
 DROP TABLE FollowedSubject;
 DROP TABLE FollowedUser;
 DROP TABLE Subject;
@@ -18,7 +20,7 @@ CREATE TABLE IF NOT EXISTS Users (
    email VARCHAR(60) NOT NULL,
    role TINYINT NOT NULL,
    avatar BLOB 
-);
+) engine=innodb;
 
 /*Creacion usuario con userName y contraseña test*/
 INSERT INTO Users (userName, password, firstName, lastName, email, role, avatar) VALUES ('test', '$2a$10$tAX5UGkz3VvxhLe8.463oOuYMOXGFXB..pZzc2/sXXbOnJ2eWO2NO', 'a', 'a', 'a@a', 0, '');
@@ -34,13 +36,13 @@ CREATE TABLE IF NOT EXISTS FollowedUser (
    CONSTRAINT FollowedUserFollowedIdFK FOREIGN KEY (followerId)
        REFERENCES Users (id)
        ON DELETE CASCADE
-);
+) engine=innodb;
 
 
 CREATE TABLE IF NOT EXISTS University (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     uniName VARCHAR(60) NOT NULL
-);
+) engine=innodb;
 
 INSERT INTO University (uniName) VALUES ('UDC');
 INSERT INTO University (uniName) VALUES ('USC');
@@ -53,7 +55,7 @@ CREATE TABLE IF NOT EXISTS Subject (
     CONSTRAINT SubjectUniversityIdFK FOREIGN KEY (universityId)
                             REFERENCES University (id)
                             ON DELETE CASCADE
-);
+) engine=innodb;
 
 INSERT INTO Subject (subjectname, universityid) VALUES ('Teoria da Computacion', 1);
 INSERT INTO Subject (subjectname, universityid) VALUES ('Lexislacion e Seguridade Informatica', 1);
@@ -68,7 +70,7 @@ CREATE TABLE IF NOT EXISTS FollowedSubject (
     CONSTRAINT FollowedSubjectUserIdFK FOREIGN KEY (userId)
                             REFERENCES Users (id)
                             ON DELETE CASCADE
-);
+) engine=innodb;
 
 
 CREATE TABLE IF NOT EXISTS Post (
@@ -77,7 +79,7 @@ CREATE TABLE IF NOT EXISTS Post (
     description TEXT,
     creationDate DATETIME NOT NULL,
     academicYear INT NOT NULL,
-    userId VARCHAR(255) NOT NULL,
+    userId BIGINT NOT NULL,
     universityId BIGINT NOT NULL,
     subjectId BIGINT NOT NULL,
     avgRating DECIMAL(2, 1) NOT NULL,
@@ -87,7 +89,14 @@ CREATE TABLE IF NOT EXISTS Post (
     CONSTRAINT PostSubjectIdFK FOREIGN KEY (subjectId)
                             REFERENCES Subject (id)
                             ON DELETE CASCADE
-);
+) engine=innodb;
+
+
+CREATE TABLE IF NOT EXISTS Etiqueta (
+    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `key` VARCHAR(255) NOT NULL,
+    value VARCHAR(255) NOT NULL
+) engine=innodb;
 
 
 CREATE TABLE IF NOT EXISTS Apunte (
@@ -100,7 +109,7 @@ CREATE TABLE IF NOT EXISTS Apunte (
     CONSTRAINT ApuntePostIdFK FOREIGN KEY (postId)
                             REFERENCES Post (id)
                             ON DELETE CASCADE
-);
+) engine=innodb;
 
 
 CREATE TABLE IF NOT EXISTS Rating (
@@ -114,8 +123,19 @@ CREATE TABLE IF NOT EXISTS Rating (
     CONSTRAINT RatingUserIdFK FOREIGN KEY (userId)
                             REFERENCES Users (id)
                             ON DELETE CASCADE
-);
+) engine=innodb;
 
+CREATE TABLE IF NOT EXISTS EtiquetaOfPost (
+      id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+      postId BIGINT NOT NULL,
+      etiquetaId BIGINT NOT NULL,
+      CONSTRAINT EtiquetaOfPostPostIdFK FOREIGN KEY (postId)
+          REFERENCES Post (id)
+          ON DELETE CASCADE,
+      CONSTRAINT EtiquetaOfPostEtiquetaIdFK FOREIGN KEY (etiquetaId)
+          REFERENCES Etiqueta (id)
+          ON DELETE CASCADE
+) engine=innodb;
 
 CREATE TABLE IF NOT EXISTS Comentario (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -132,13 +152,14 @@ CREATE TABLE IF NOT EXISTS Comentario (
     CONSTRAINT commentRespuestaIdFK FOREIGN KEY(comentarioPadreId)
                             REFERENCES Comentario (id)
                             ON DELETE CASCADE
-);
+) engine=innodb;
 
 
 CREATE TABLE IF NOT EXISTS Notification (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `read` BOOLEAN NOT NULL,
     newPost BOOLEAN NOT NULL,
+    newPostSubject BOOLEAN NOT NULL,
     userId BIGINT NOT NULL,
     comentarioId BIGINT,
     postId BIGINT,
@@ -151,4 +172,4 @@ CREATE TABLE IF NOT EXISTS Notification (
     CONSTRAINT NotificationPostIdFK FOREIGN KEY (postId)
                     REFERENCES Post(id)
                     ON DELETE CASCADE
-);
+) engine=innodb;

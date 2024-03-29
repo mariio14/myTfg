@@ -86,10 +86,10 @@
 			</activation>
 			<properties>
 				<!--  Data source properties -->
-				<dataSource.url>jdbc:h2:file:~/dalmatas</dataSource.url>
-				<testDataSource.url>jdbc:h2:mem:dalmatasTest</testDataSource.url>
-				<dataSource.user>sa</dataSource.user>
-				<dataSource.password></dataSource.password>
+				<dataSource.url>jdbc:mariadb://localhost:3307/tfg</dataSource.url>
+				<testDataSource.url>jdbc:mariadb://localhost:3307/tfgTest</testDataSource.url>
+				<dataSource.user>root</dataSource.user>
+				<dataSource.password>root</dataSource.password>
 			</properties>
 			<dependencies>
 				<dependency>
@@ -158,9 +158,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>2.5.2</version>
 		</dependency>
 
 		<dependency>

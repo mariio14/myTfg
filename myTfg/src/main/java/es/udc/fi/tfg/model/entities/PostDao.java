@@ -28,6 +28,5 @@ public interface PostDao extends JpaRepository<Post, Long>, CustomizedPostDao{
 	 * @return the slice
 	 */
 	Slice<Post> findByUserId(Long userId, Pageable pageable);
-	
 
 }

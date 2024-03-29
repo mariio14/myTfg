@@ -45,12 +45,13 @@ public class PostController {
                               @RequestParam("titulo") String titulo,
                               @RequestParam("descripcion") String descripcion,
                               @RequestParam("academicYear") String academicYear,
-                              @RequestParam("subjectId") String subjectId)
+                              @RequestParam("subjectId") String subjectId,
+                              @RequestParam("etiquetas") List<String> etiquetas)
             throws InstanceNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeyException {
 
         List<MultipartFile> fileList = new ArrayList<>(files.values());
 
-        Post post = postService.uploadPost(userId,titulo,descripcion,academicYear, Long.valueOf(subjectId), fileList);
+        Post post = postService.uploadPost(userId,titulo,descripcion,academicYear, Long.valueOf(subjectId), fileList, etiquetas);
 
         List<Apunte> apunteList = new ArrayList<>(post.getApuntes());
 
@@ -186,5 +187,20 @@ public class PostController {
     @GetMapping("/subjects/{id}")
     public List<SubjectDto> findAllSubjects(@PathVariable Long id) {
         return SubjectConversor.toSubjectDtos(postService.findAllSubjectsByUni(id));
+    }
+
+    @GetMapping("/feedEtiqueta/{etiquetaId}")
+    public BlockDto<PostDto> findPostsByEtiquetaId(@PathVariable Long etiquetaId,
+                                                    @RequestParam(defaultValue = "0") int page) throws IOException, InstanceNotFoundException {
+
+        Block<Post> postBlock = postService.findPostsByEtiquetaId(etiquetaId, page, 2);
+
+        List<PostDto> postDtoList = new ArrayList<>();
+        for (Post post : postBlock.getItems()) {
+            List<Apunte> apuntes = postService.findApuntesByPost(post.getId());
+            PostDto postDto = PostConversor.toPostDto(post,apuntes);
+            postDtoList.add(postDto);
+        }
+        return new BlockDto<>(postDtoList, postBlock.getExistMoreItems());
     }
 }

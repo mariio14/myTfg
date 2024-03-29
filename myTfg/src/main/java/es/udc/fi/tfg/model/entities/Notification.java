@@ -16,6 +16,8 @@ public class Notification {
 	public boolean read;
 
 	public boolean newPost;
+
+	public boolean newPostSubject;
 	
 	public Users user;
 	
@@ -25,6 +27,7 @@ public class Notification {
 
 	
 
+	// Entera
 	public Notification(Long id, boolean read, boolean newPost, Users user, Comentario comentario, Post post) {
 		this.id = id;
 		this.read = read;
@@ -34,17 +37,19 @@ public class Notification {
 		this.post = post;
 	}
 
-
+	// Responde a comentario
 	public Notification(boolean read, boolean newPost, Users user, Comentario comentario) {
 		this.read = read;
 		this.newPost = newPost;
 		this.user = user;
 		this.comentario = comentario;
 	}
-	
-	public Notification(boolean read, boolean newPost, Users user, Post post) {
+
+	// Post de usuario al que sigues o de asignatura
+	public Notification(boolean read, boolean newPost, boolean newPostSubject, Users user, Post post) {
 		this.read = read;
 		this.newPost = newPost;
+		this.newPostSubject = newPostSubject;
 		this.user = user;
 		this.post = post;
 	}
@@ -78,6 +83,14 @@ public class Notification {
 
 	public void setNewPost(boolean newPost) {
 		this.newPost = newPost;
+	}
+
+	public boolean isNewPostSubject() {
+		return newPostSubject;
+	}
+
+	public void setNewPostSubject(boolean newPostSubject) {
+		this.newPostSubject = newPostSubject;
 	}
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)

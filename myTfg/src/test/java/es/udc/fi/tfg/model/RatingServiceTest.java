@@ -21,11 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 
 import static org.junit.Assert.assertTrue;
@@ -57,7 +56,7 @@ public class RatingServiceTest{
     }
     
     
-    private Post uploadPost(Users user) throws InstanceNotFoundException, DuplicateInstanceException, IOException {
+    private Post uploadPost(Users user) throws InstanceNotFoundException, DuplicateInstanceException, IOException, NoSuchAlgorithmException, InvalidKeyException {
 
 		userService.signUp(user);
 
@@ -178,7 +177,7 @@ public class RatingServiceTest{
             public List<MultipartFile> subList(int fromIndex, int toIndex) {
                 return null;
             }
-        });
+        }, new ArrayList<>());
 		return post1;
 
     }
