@@ -7,6 +7,7 @@ import * as userSelectors from "../../users/selectors";
 import {Errors, Pager} from "../../common";
 import {Avatar} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import {PostSocket} from "../index";
 
 
 const Chat = () => {
@@ -65,6 +66,7 @@ const Chat = () => {
 
     return(
         <div>
+            <PostSocket id={id}/>
             <Errors errors={backendErrors}
                     onClose={() => setBackendErrors(null)}/>
             <hr className='hr_titulo'></hr>
@@ -83,10 +85,10 @@ const Chat = () => {
                                         <div className='avatar_div' data-testid={`avatar-comment-${idxMessage}`}>
                                             <Avatar alt="Remy Sharp" src={"data:image/jpeg;base64," + message.avatar} sx={{ width: 45, height: 45 }}/>
                                         </div>
-                                        <h5 className="comment-username" data-testid={`userName-comment-${idxMessage}`}>{message.date}</h5>
+                                        <p className="comment-username" data-testid={`userName-comment-${idxMessage}`}>{message.date}</p>
                                     </div>
                                 </div>
-                                <p className="comment-text" data-testid={`text-comment-${idxMessage}`}>{message.text}</p>
+                                <h5 className="comment-text" data-testid={`text-comment-${idxMessage}`}>{message.text}</h5>
                                 <hr/>
                             </div>
                         )}

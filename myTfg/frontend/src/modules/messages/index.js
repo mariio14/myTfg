@@ -4,5 +4,6 @@ import reducer from './reducer';
 import * as selectors from './selectors';
 
 export {default as Chat} from "./components/Chat";
+export {default as PostSocket} from  "./components/PostSocket";
 
 export default {actions, actionTypes, reducer, selectors};

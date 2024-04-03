@@ -5,6 +5,7 @@ import es.udc.fi.tfg.model.entities.Message;
 import es.udc.fi.tfg.model.services.MessageService;
 import es.udc.fi.tfg.rest.dtos.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -25,11 +26,12 @@ public class MessageController {
     }
 
     @PostMapping("/send/{id}")
+    //@SendTo("/topic/chat.{id}")
     public MessageDto sendMessage(@PathVariable Long id, @RequestAttribute Long userId,
                                   @Validated @RequestBody UploadComentarioParamsDto params) throws InstanceNotFoundException {
 
         Message message = messageService.sendMessage(userId, id, params.getTextoComentario());
-        //messagingTemplate.convertAndSend("/{id}", message);   // ("/user/receive/{id}", message);
+        messagingTemplate.convertAndSend("/topic/chat." + id.toString() + "." + userId, message.getText());
         return MessageConversor.toMessageDto(message);
     }
 
