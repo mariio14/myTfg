@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 
 import es.udc.fi.tfg.model.entities.*;
 
+import es.udc.fi.tfg.model.services.exceptions.AlreadyFollowingException;
+import es.udc.fi.tfg.model.services.exceptions.NotFollowingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -53,6 +55,9 @@ public class PostServiceImpl implements PostService  {
 
     @Autowired
     private UniversityDao universityDao;
+
+    @Autowired
+    private FollowedSubjectDao followedSubjectDao;
 
     @Autowired
     private EtiquetaDao etiquetaDao;
@@ -242,5 +247,56 @@ public class PostServiceImpl implements PostService  {
         }
         return post.get();
     }
+
+
+    @Override
+    public void followSubject(Long userId, Long subjectId) throws AlreadyFollowingException, InstanceNotFoundException {
+
+        Users user = permissionChecker.checkUser(userId);
+
+        Optional<Subject> subjectOptional = subjectDao.findById(subjectId);
+
+        if(subjectOptional.isEmpty()) {
+            throw new InstanceNotFoundException("project.entities.subject", subjectId);
+        }
+
+        Optional<FollowedSubject> optionalFollowedSubject = followedSubjectDao.findByUser_IdAndSubject_Id(userId,subjectId);
+
+        if (!optionalFollowedSubject.isEmpty()) {
+            throw new AlreadyFollowingException("Ya esta siguiendo a esta asignatura");
+        }
+
+        FollowedSubject followedSubject = new FollowedSubject(user, subjectOptional.get());
+
+        followedSubjectDao.save(followedSubject);
+    }
+
+
+    @Override
+    public void unfollowSubject(Long userId, Long subjectId) throws InstanceNotFoundException, NotFollowingException {
+
+        Users user = permissionChecker.checkUser(userId);
+
+        Optional<Subject> subjectOptional = subjectDao.findById(subjectId);
+
+        if(subjectOptional.isEmpty()) {
+            throw new InstanceNotFoundException("project.entities.subject", subjectId);
+        }
+        Subject subject1 = subjectOptional.get();
+
+        Optional<FollowedSubject> optionalFollowedSubject = followedSubjectDao.findByUser_IdAndSubject_Id(userId,subjectId);
+
+        if (optionalFollowedSubject.isEmpty()) {
+            throw new NotFollowingException("No esta siguiendo a esta asignatura");
+        }
+
+        FollowedSubject followedSubject1 = optionalFollowedSubject.get();
+
+        followedSubjectDao.delete(followedSubject1);
+
+        subject1.getFollowedSubjects().removeIf(followedSubject -> followedSubject.equals(followedSubject1));
+        user.getFollowedSubjects().removeIf(followedSubject -> followedSubject.equals(followedSubject1));
+    }
+
 
 }
