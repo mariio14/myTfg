@@ -33,16 +33,10 @@ public class NotificationController {
 	public List<NotificationDto> getAllNotifications(@RequestAttribute Long userId) throws InstanceNotFoundException {
 
 		List<Notification> notifications = notificationService.getNotificationsByUser(userId);
-		
-		
+
 		List<NotificationDto> notificationDtoList = new ArrayList<>();
 		for(Notification notification : notifications) {
-
-			NotificationDto notificationDto;
-			if(notification.getComentario() == null)
-				notificationDto = NotificationConversor.toNotificationDtoCommentNull(notification);
-			else
-				notificationDto = NotificationConversor.toNotificationDto(notification);
+			NotificationDto notificationDto = NotificationConversor.toNotificationDto(notification);
 			notificationDtoList.add(notificationDto);
 		}
 

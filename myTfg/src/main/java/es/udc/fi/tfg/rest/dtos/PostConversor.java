@@ -44,7 +44,7 @@ public class PostConversor{
 		}
 		return new PostDtoReturn(post.getId(),post.getUser().getId(), post.getUser().getUserName(), post.getUser().getAvatar(), post.getTitle(), post.getDescription(),
 				post.getCreationDate(), post.getAcademicYear() + "/" + year, post.getAvgRating(), rating, post.getSubject().getSubjectName(),
-				post.getSubject().getUniversity().getUniName(), files.get(0), fileNames, urls.get(0));
+				post.getSubject().getUniversity().getUniName(), null, fileNames, "");
 	}
 
 	public static final PostFeedDto toPostFeedDto(Post post) throws IOException {

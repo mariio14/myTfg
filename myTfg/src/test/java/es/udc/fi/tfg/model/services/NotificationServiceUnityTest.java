@@ -85,7 +85,7 @@ public class NotificationServiceUnityTest {
     public void should_get_not_read_notifications() throws InstanceNotFoundException {
         // Configurar los comportamientos esperados
         when(userDaoMock.findById(anyLong())).thenReturn(Optional.of(getValidUser()));
-        when(notificationDaoMock.countByUserIdAndReadFalse(anyLong())).thenReturn(2);
+        when(notificationDaoMock.countByUserIdAndLeidoFalse(anyLong())).thenReturn(2);
 
         // Llamamos al servicio
         int result = notificationService.getNotReadNotifications(1L);
@@ -103,7 +103,7 @@ public class NotificationServiceUnityTest {
     }
 
     private Notification getValidNotification() {
-        return new Notification(false, false, getValidUser(), getValidComment());
+        return new Notification(false, getValidUser(), getValidComment(), getValidPost(), Notification.Type.MESSAGE);
     }
 
     private List<Notification> getValidNotifications() {

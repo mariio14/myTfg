@@ -49,7 +49,7 @@ public class FollowedSubject {
     }
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "subjectIdId")
+    @JoinColumn(name = "subjectId")
     public Subject getSubject() {
         return subject;
     }

@@ -16,6 +16,11 @@ const UserProfile = () => {
         navigate(path);
     }
 
+    const navigatetoChat = (id, userName) => {
+        const path = `/messages/${id}/${userName}`;
+        navigate(path);
+    }
+
     useEffect(() => {
 
             const userId = Number(id);
@@ -47,6 +52,8 @@ const UserProfile = () => {
             <div>{profile.numFollowed}</div>
 
             <button onClick={e => handleFollowClick(e)}> {profile.followed ? 'Unfollow' : 'Follow'}</button>
+
+            <button onClick={e => navigatetoChat(profile.id, profile.userName)}> Chat </button>
 
             <div className="row">
                 {profile.posts.items &&

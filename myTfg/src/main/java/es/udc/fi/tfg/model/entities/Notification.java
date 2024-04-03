@@ -10,50 +10,65 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Notification {
-	
-	public Long id;
-	
-	public boolean read;
 
-	public boolean newPost;
-
-	public boolean newPostSubject;
+	public enum Type {
+		NEW_POST,
+		NEW_POST_SUBJECT,
+		MESSAGE,
+		COMMENT,
+		ANSWER
+	}
 	
-	public Users user;
+	private Long id;
 	
-	public Comentario comentario;
-
-	public Post post;
-
+	private boolean leido;
 	
+	private Users user;
+	
+	private Comentario comentario;
 
-	// Entera
-	public Notification(Long id, boolean read, boolean newPost, Users user, Comentario comentario, Post post) {
+	private Post post;
+
+	private Message message;
+
+	private Type type;
+
+
+	//Entera
+	public Notification(Long id, boolean leido, Users user, Comentario comentario, Post post, Message message, Type type) {
 		this.id = id;
-		this.read = read;
-		this.newPost = newPost;
+		this.leido = leido;
 		this.user = user;
 		this.comentario = comentario;
 		this.post = post;
+		this.message = message;
+		this.type = type;
 	}
 
-	// Responde a comentario
-	public Notification(boolean read, boolean newPost, Users user, Comentario comentario) {
-		this.read = read;
-		this.newPost = newPost;
+	// Comentario en post
+	public Notification(boolean leido, Users user, Comentario comentario, Post post, Type type) {
+		this.leido = leido;
 		this.user = user;
 		this.comentario = comentario;
+		this.post = post;
+		this.type = type;
 	}
 
-	// Post de usuario al que sigues o de asignatura
-	public Notification(boolean read, boolean newPost, boolean newPostSubject, Users user, Post post) {
-		this.read = read;
-		this.newPost = newPost;
-		this.newPostSubject = newPostSubject;
+	// Post nuevo
+	public Notification(boolean leido, Users user, Post post, Type type) {
+		this.leido = leido;
 		this.user = user;
 		this.post = post;
+		this.type = type;
 	}
-	
+
+	// Mensaje privado
+	public Notification(boolean leido, Users user, Message message, Type type) {
+		this.leido = leido;
+		this.user = user;
+		this.message = message;
+		this.type = type;
+	}
 
 	public Notification() {
 	}
@@ -69,28 +84,12 @@ public class Notification {
 		this.id = id;
 	}
 
-	public boolean isRead() {
-		return read;
+	public boolean isLeido() {
+		return leido;
 	}
 
-	public void setRead(boolean read) {
-		this.read = read;
-	}
-
-	public boolean isNewPost() {
-		return newPost;
-	}
-
-	public void setNewPost(boolean newPost) {
-		this.newPost = newPost;
-	}
-
-	public boolean isNewPostSubject() {
-		return newPostSubject;
-	}
-
-	public void setNewPostSubject(boolean newPostSubject) {
-		this.newPostSubject = newPostSubject;
+	public void setLeido(boolean leido) {
+		this.leido = leido;
 	}
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -122,5 +121,22 @@ public class Notification {
 	public void setPost(Post post) {
 		this.post = post;
 	}
-	
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "messageId")
+	public Message getMessage() {
+		return message;
+	}
+
+	public void setMessage(Message message) {
+		this.message = message;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
 }

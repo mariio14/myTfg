@@ -6,6 +6,7 @@ import Home from "./Home";
 import { Notifications } from "../../notification";
 import {Post, PostDetails, UpdatePost} from "../../post";
 import MyFeed from "../../post/components/MyFeed";
+import {Chat} from "../../messages";
 
 
 
@@ -26,8 +27,9 @@ const Body = () => {
 			{loggedIn && <Route path="/users/createPost" element={<Post />} />}
 			{loggedIn && <Route path="/users/updatePost/:id" element={<UpdatePost />} />}
 			{loggedIn && <Route path="/users/myFeed" element={<MyFeed />} />}
+			{loggedIn && <Route path="/messages/:id/:userName" element={<Chat />} />}
 			{<Route path="/feed/posts/:id" element={<PostDetails />} />}
-			{<Route path="/users/:id" element={<UserProfile />} />}
+			{loggedIn && <Route path="/users/:id" element={<UserProfile />} />}
 		</Routes>
 	);
 };

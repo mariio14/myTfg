@@ -6,37 +6,27 @@ public class NotificationDto {
 	
 	private boolean read;
 	
-	private Long userId;
-	
-	private String userName;
-	
 	private byte[] avatar;
+
+	private String text;
 	
-	private Long postId;
-		
-	private String postTitulo;
-	
-	private Long comentarioId;
-	
-	private String textoComentario;
-	
-	private boolean respondeAComentario;
+	private String redirect;
+
+	private Long redirectId;
+
+	private String redirectUserName;
 
 	public NotificationDto() {
 	}
 
-	public NotificationDto(Long id, boolean read, Long userId, String userName, byte[] avatar, Long postId, String postTitulo,
-						   Long comentarioId, String textoComentario, boolean respondeAComentario) {
+	public NotificationDto(Long id, boolean read, byte[] avatar, String text, String redirect, Long redirectId, String redirectUserName) {
 		this.id = id;
 		this.read = read;
-		this.userId = userId;
-		this.userName = userName;
-		this.postId = postId;
-		this.postTitulo = postTitulo;
-		this.comentarioId = comentarioId;
-		this.textoComentario = textoComentario;
-		this.respondeAComentario = respondeAComentario;
 		this.avatar = avatar;
+		this.text = text;
+		this.redirect = redirect;
+		this.redirectId = redirectId;
+		this.redirectUserName = redirectUserName;
 	}
 
 	public Long getId() {
@@ -55,62 +45,6 @@ public class NotificationDto {
 		this.read = read;
 	}
 
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public Long getPostId() {
-		return postId;
-	}
-
-	public void setPostId(Long postId) {
-		this.postId = postId;
-	}
-
-	public String getPostTitulo() {
-		return postTitulo;
-	}
-
-	public void setPostTitulo(String postTitulo) {
-		this.postTitulo = postTitulo;
-	}
-
-	public Long getComentarioId() {
-		return comentarioId;
-	}
-
-	public void setComentarioId(Long comentarioId) {
-		this.comentarioId = comentarioId;
-	}
-
-	public String getTextoComentario() {
-		return textoComentario;
-	}
-
-	public void setTextoComentario(String textoComentario) {
-		this.textoComentario = textoComentario;
-	}
-
-	public boolean isRespondeAComentario() {
-		return respondeAComentario;
-	}
-
-	public void setRespondeAComentario(boolean respondeAComentario) {
-		this.respondeAComentario = respondeAComentario;
-	}
-
 	public byte[] getAvatar() {
 		return avatar;
 	}
@@ -118,5 +52,36 @@ public class NotificationDto {
 	public void setAvatar(byte[] avatar) {
 		this.avatar = avatar;
 	}
-	
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getRedirect() {
+		return redirect;
+	}
+
+	public void setRedirect(String redirect) {
+		this.redirect = redirect;
+	}
+
+	public Long getRedirectId() {
+		return redirectId;
+	}
+
+	public void setRedirectId(Long redirectId) {
+		this.redirectId = redirectId;
+	}
+
+	public String getRedirectUserName() {
+		return redirectUserName;
+	}
+
+	public void setRedirectUserName(String redirectUserName) {
+		this.redirectUserName = redirectUserName;
+	}
 }

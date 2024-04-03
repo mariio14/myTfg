@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NotificationDao extends JpaRepository<Notification, Long>{
 	
-	int countByUserIdAndReadFalse(Long userId);
+	int countByUserIdAndLeidoFalse(Long userId);
 	
 	List<Notification> findByUserIdOrderByIdDesc(Long userId);
 }

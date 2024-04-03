@@ -4,6 +4,7 @@ import * as ratingService from "./ratingService";
 import * as commentService from "./commentService";
 import * as notificationService from "./notificationService";
 import * as postService from "./postService";
+import * as messageService from "./messageService";
 
 export { default as NetworkError } from "./NetworkError";
 
@@ -14,7 +15,8 @@ const backend = {
   ratingService,
   commentService,
   notificationService,
-  postService
+  postService,
+  messageService
 };
 
 export default backend;

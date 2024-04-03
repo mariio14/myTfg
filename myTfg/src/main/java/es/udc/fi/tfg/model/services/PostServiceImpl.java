@@ -79,7 +79,7 @@ public class PostServiceImpl implements PostService  {
         postDao.save(post);
 
         for(MultipartFile file : files){
-            fileStorageService.uploadFile(file);
+            //fileStorageService.uploadFile(file);
             /*String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
             // Define the storage path
@@ -101,12 +101,12 @@ public class PostServiceImpl implements PostService  {
         }
 
         for (FollowedUser follower: user.getFollowerUsers() ) {
-            Notification notification = new Notification(false, true, false, follower.getFollower(), post);
+            Notification notification = new Notification(false, follower.getFollower(), post, Notification.Type.NEW_POST);
             notificationDao.save(notification);
         }
 
         for (FollowedSubject follower: subject.get().getFollowedSubjects() ) {
-            Notification notification = new Notification(false, true, true, follower.getUser(), post);
+            Notification notification = new Notification(false, follower.getUser(), post, Notification.Type.NEW_POST_SUBJECT);
             notificationDao.save(notification);
         }
 

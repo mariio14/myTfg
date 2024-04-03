@@ -204,7 +204,7 @@ public class UserController {
 
 	@GetMapping("/{id}")
 	public UserProfileDto userProfile(@PathVariable("id") Long id, @RequestAttribute Long userId) throws InstanceNotFoundException, IOException {
-		return UserConversor.toUserProfileDto(userService.getUserProfile(id), userService.userFollows(userId,id),
+		return UserConversor.toUserProfileDto(userService.getUserProfile(id), userService.userFollows(id,userId),
 				postService.findPostsByUserId(id, 0,2));
 	}
 

@@ -1,15 +1,16 @@
-DROP TABLE Apunte;
-DROP TABLE Rating;
-DROP TABLE Notification;
-DROP TABLE Comentario;
+DROP TABLE IF EXISTS Apunte;
+DROP TABLE IF EXISTS Rating;
+DROP TABLE IF EXISTS Notification;
+DROP TABLE IF EXISTS Message;
+DROP TABLE IF EXISTS Comentario;
 DROP TABLE IF EXISTS EtiquetaOfPost;
-DROP TABLE Post;
+DROP TABLE IF EXISTS Post;
 DROP TABLE IF EXISTS Etiqueta;
-DROP TABLE FollowedSubject;
-DROP TABLE FollowedUser;
-DROP TABLE Subject;
-DROP TABLE Users;
-DROP TABLE University;
+DROP TABLE IF EXISTS FollowedSubject;
+DROP TABLE IF EXISTS FollowedUser;
+DROP TABLE IF EXISTS Subject;
+DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS University;
 
 CREATE TABLE IF NOT EXISTS Users (
    id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -125,6 +126,22 @@ CREATE TABLE IF NOT EXISTS Rating (
                             ON DELETE CASCADE
 ) engine=innodb;
 
+
+CREATE TABLE IF NOT EXISTS Message (
+        id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+        text TEXT NOT NULL,
+        senderId BIGINT NOT NULL,
+        receiverId BIGINT NOT NULL,
+        date DATETIME NOT NULL,
+        CONSTRAINT MessageSenderIdFK FOREIGN KEY (senderId)
+          REFERENCES Users (id)
+          ON DELETE CASCADE,
+        CONSTRAINT MessageReceiverIdFK FOREIGN KEY (receiverId)
+          REFERENCES Users (id)
+          ON DELETE CASCADE
+) engine=innodb;
+
+
 CREATE TABLE IF NOT EXISTS EtiquetaOfPost (
       id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
       postId BIGINT NOT NULL,
@@ -157,12 +174,12 @@ CREATE TABLE IF NOT EXISTS Comentario (
 
 CREATE TABLE IF NOT EXISTS Notification (
     id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `read` BOOLEAN NOT NULL,
-    newPost BOOLEAN NOT NULL,
-    newPostSubject BOOLEAN NOT NULL,
+    leido BOOLEAN NOT NULL,
     userId BIGINT NOT NULL,
     comentarioId BIGINT,
     postId BIGINT,
+    messageId BIGINT,
+    type TINYINT NOT NULL,
     CONSTRAINT NotificationUserIdFK FOREIGN KEY (userId)
                     REFERENCES Users(id)
                     ON DELETE CASCADE,
@@ -171,5 +188,8 @@ CREATE TABLE IF NOT EXISTS Notification (
                     ON DELETE CASCADE,
     CONSTRAINT NotificationPostIdFK FOREIGN KEY (postId)
                     REFERENCES Post(id)
-                    ON DELETE CASCADE
+                    ON DELETE CASCADE,
+    CONSTRAINT NotificationMessageIdFK FOREIGN KEY (messageId)
+        REFERENCES Message(id)
+        ON DELETE CASCADE
 ) engine=innodb;

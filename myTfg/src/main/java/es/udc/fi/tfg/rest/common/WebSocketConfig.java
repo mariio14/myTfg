@@ -13,7 +13,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic/uploadedPost"); //all messages sent to uploadedPost will arrive to those who are subscribed
+        config.enableSimpleBroker("/user/receive");
         config.setApplicationDestinationPrefixes("/app");
     }
 

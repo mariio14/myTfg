@@ -21,18 +21,12 @@ public class NotificationConversorTest {
         Users user = getValidUser();
         Post post = getValidPost();
         Comentario comentario = new Comentario("comentario", post, user);
-        Notification notification = new Notification(1L, false, false, user, comentario, post);
+        Message message = new Message(user, user, LocalDateTime.now(), "");
+        Notification notification = new Notification(1L, false, user, comentario, post, message, Notification.Type.NEW_POST);
 
         NotificationDto notificationDto = NotificationConversor.toNotificationDto(notification);
 
-        assertEquals(notification.isRead(), notificationDto.isRead());
-        assertEquals(notification.getUser().getId(), notificationDto.getUserId());
-        assertEquals(notification.getUser().getUserName(), notificationDto.getUserName());
-        assertEquals(notification.getUser().getAvatar(), notificationDto.getAvatar());
-        assertEquals(notification.getComentario().getPost().getId(), notificationDto.getPostId());
-        assertEquals(notification.getComentario().getPost().getTitle(), notificationDto.getPostTitulo());
-        assertEquals(notification.getComentario().getId(), notificationDto.getComentarioId());
-        assertEquals(notification.getComentario().getTextoComentario(), notificationDto.getTextoComentario());
+        assertEquals(notification.isLeido(), notificationDto.isRead());
     }
 
 

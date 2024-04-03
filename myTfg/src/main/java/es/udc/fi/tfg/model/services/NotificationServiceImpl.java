@@ -40,7 +40,7 @@ public class NotificationServiceImpl implements NotificationService{
 		
 		Optional<Users> user = userDao.findById(userId);
 
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new InstanceNotFoundException("User no encontrado", user);
         }
         
@@ -49,10 +49,11 @@ public class NotificationServiceImpl implements NotificationService{
         List<Notification> notificationsCopy = new ArrayList<>();
         
         for(Notification notification : notifications) {
-        	notificationsCopy.add(new Notification(notification.getId(), notification.isRead(), notification.isNewPost(),
-        			notification.getUser(), notification.getComentario(), notification.getPost()));
-        	if(notification.isRead()==false)
-        		notification.setRead(true);
+        	notificationsCopy.add(new Notification(notification.getId(), notification.isLeido(),
+					notification.getUser(), notification.getComentario(), notification.getPost(),
+					notification.getMessage(), notification.getType()));
+        	if(!notification.isLeido())
+        		notification.setLeido(true);
         }
         
         return notificationsCopy;
@@ -62,11 +63,11 @@ public class NotificationServiceImpl implements NotificationService{
 	public int getNotReadNotifications(Long userId) throws InstanceNotFoundException {
 		Optional<Users> user = userDao.findById(userId);
 
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new InstanceNotFoundException("User no encontrado", user);
         }
         
-        return notificationDao.countByUserIdAndReadFalse(userId);
+        return notificationDao.countByUserIdAndLeidoFalse(userId);
 	}
 	
 }

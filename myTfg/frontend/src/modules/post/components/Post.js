@@ -41,6 +41,7 @@ const Post = () => {
 			formData.append('descripcion', descripcion);
 			formData.append('academicYear', academicYear);
 			formData.append('subjectId', subjectId);
+			formData.append('etiquetas', '');
             dispatch(actions.postear(
                 formData,
                 () => {

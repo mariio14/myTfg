@@ -1,11 +1,9 @@
 package es.udc.fi.tfg.rest.controllers;
 
-
 import es.udc.fi.tfg.model.common.exceptions.InstanceNotFoundException;
 import es.udc.fi.tfg.model.entities.Apunte;
 import es.udc.fi.tfg.model.entities.Post;
 import es.udc.fi.tfg.model.entities.Rating;
-import es.udc.fi.tfg.model.entities.Subject;
 import es.udc.fi.tfg.model.services.Block;
 import es.udc.fi.tfg.model.services.CommentService;
 import es.udc.fi.tfg.model.services.PostService;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -35,9 +32,6 @@ public class PostController {
 
     @Autowired
     private RatingService ratingService;
-
-    @Autowired
-    private CommentService commentService;
 
     @PostMapping("/upload")
     public PostDto uploadPost(@RequestAttribute Long userId,

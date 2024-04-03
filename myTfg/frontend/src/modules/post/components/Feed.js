@@ -40,7 +40,7 @@ const Feed = () => {
 				{feed.result.items &&
 					feed.result.items.map((post, idx) => (
 						<div key={idx} className="col-12 col-lg-6 mb-5" data-testid={`post-${idx}`}>
-							<div className={`card post-card ${post.cupon ? 'bg-lightblue' : 'bg-white'} rounded-4`}
+							<div className={'card post-card bg-white rounded-4'}
 								onClick={() => navigatetoPostDetail(post.id)}>
 								<div className="Post_feed">
 									<div className="post-content" style={{ width: '100%', display: 'block' }}>

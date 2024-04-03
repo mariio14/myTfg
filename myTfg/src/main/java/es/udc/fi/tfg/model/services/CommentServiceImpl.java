@@ -66,7 +66,7 @@ public class CommentServiceImpl implements CommentService {
                 
         //Creamos la notificacion, excepto si el usuario se comenta a si mismo
         if(newPost.getUser() != registeredUser) {
-        	Notification notification = new Notification(false, false, newPost.getUser(), savedComment);
+        	Notification notification = new Notification(false, newPost.getUser(), savedComment, newPost, Notification.Type.COMMENT);
         	notificationDao.save(notification);
         }
 
@@ -85,7 +85,7 @@ public class CommentServiceImpl implements CommentService {
         
         Optional<Comentario> comentarioPadre1 = comentarioDao.findById(comentarioPadre);
 
-        if (!comentarioPadre1.isPresent()) {
+        if (comentarioPadre1.isEmpty()) {
             throw new InstanceNotFoundException("Comentario no encontrado", comentarioPadre);
         }
         Comentario comentarioPadreFinal = comentarioPadre1.get();
@@ -101,17 +101,17 @@ public class CommentServiceImpl implements CommentService {
         if(respuestaId == 0L) {
             //Creamos la notificacion, excepto si el usuario se responde a si mismo
             if (comentarioPadreFinal.getUser() != registeredUser) {
-                notification = new Notification(false, false, comentarioPadreFinal.getUser(), savedAnswer);
+                notification = new Notification(false, comentarioPadreFinal.getUser(), savedAnswer, post, Notification.Type.ANSWER);
                 notificationDao.save(notification);
             }
         } else {
             Optional<Comentario> answer = comentarioDao.findById(respuestaId);
-            if (!answer.isPresent()) {
+            if (answer.isEmpty()) {
                 throw new InstanceNotFoundException("Estas respondiendo al comentario de un usuario inexistente.", answer);
             }
 
             if (answer.get().getUser() != registeredUser) {
-                notification = new Notification(false, false, answer.get().getUser(), savedAnswer);
+                notification = new Notification(false, answer.get().getUser(), savedAnswer, post, Notification.Type.ANSWER);
                 notificationDao.save(notification);
             }
         }

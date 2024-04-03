@@ -54,7 +54,8 @@ const Comentarios = () => {
 				textoComentario,
 				comment => dispatch(actions.getPostCommentsAndAnswersBlock({postId,  page: 0 })),
                 errors => setBackendErrors(errors),
-       			));       		
+       			));
+			setTextoComentario('')
         } else {
             setBackendErrors(null);
             form.classList.add('was-validated');

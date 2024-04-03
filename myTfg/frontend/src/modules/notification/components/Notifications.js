@@ -25,9 +25,15 @@ const Notifications = () => {
 		};
 	}, [dispatch, update])
 	
-	const navigatetoPostDetail = (id) => {
-		const path = `/feed/posts/${id}`;
-		navigate(path);
+	const navigateToAny = (redirect, id, userName) => {
+		if (redirect === "message") {
+			const path = `/messages/${id}/${userName}`;
+			navigate(path);
+		}
+		else{
+			const path = `/feed/posts/${id}`;
+			navigate(path);
+		}
 	}
 	
 	const handleDelete = (event, notificationId) => {
@@ -63,32 +69,17 @@ const Notifications = () => {
 		   {notifications && notifications.map((notification, idx) => (
 		     <div key={idx} style={{margin:'2em'}}>
 		       <div className={`card post-card ${notification.read ? 'bg-white' : 'bg-lightcoral'} rounded-4`}
-		         onClick={() => navigatetoPostDetail(notification.postId)}
+		         onClick={() => navigateToAny(notification.redirect, notification.redirectId, notification.redirectUserName)}
 		         style={{ display: 'flex', flexDirection: 'row', minHeight:'50px'}}>
 		         <div className="post-content" style={{width: '100%', display:'block', margin:'auto 0px'}}>
 		           <div className="post-text">
 		             <div className="box" style={{display:'flex', margin:'auto 0'}}>
 		               <Avatar data-testid={`notification-avatar-${idx}`} style={{margin:'auto 20px'}} alt="Remy Sharp" src={"data:image/jpeg;base64," + notification.avatar} sx={{ width: 45, height: 45}}/>
 		               <h2 style={{borderBottom:'none'}} data-testid={`notification-text-${idx}`}>
-		               	 {notification.comentarioId===0 
-		               	 ? <>El usuario <b>{notification.userName}</b> ha modificado su publicacion <b>{notification.postTitulo}</b>. Echale un vistazo!</>
-		               	 : notification.respondeAComentario 
-		                  ? <>El usuario <b>{notification.userName}</b> ha respondido a tu comentario: {notification.textoComentario}</> 
-		                  : <>El usuario <b>{notification.userName}</b> ha comentado en tu post <b>"{notification.postTitulo}"</b>: {notification.textoComentario}</> 
-		                  }
+						   {notification.text}
 		                </h2>
 		             </div>
 		           </div>
-		         </div>
-		         <div style={{margin:'auto 0',transform:'scale(0.5)'}} className="post-text-info">
-		           {notification.imagen && (
-				     <img
-					   data-testid={`notification-image-${idx}`}
-				       className="fixed-image"
-				       src={"data:image/jpeg;base64," + notification.imagen}
-				       alt="Primera imagen en base64"
-				     />
-				   )}
 		         </div>
 		         <IconButton data-testid={`notification-button-${idx}`} style={{height:'40px', margin:'auto 0'}}  onClick={(e) => handleDelete(e, notification.id)}>
                 	<CloseIcon />
