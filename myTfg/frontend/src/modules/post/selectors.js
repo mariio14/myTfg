@@ -20,21 +20,12 @@ export const getSubjects = state => {
     return moduleState ? moduleState.subjects : null;
 };
 
-export const getRefreshFeed = state =>
-    getModuleState(state).feedRefresh;
+export const getKeys = state => {
+    const moduleState = getModuleState(state);
+    return moduleState ? moduleState.keys : null;
+};
 
-export const getCategoryName = (categories, id) => {
-
-    if (!categories) {
-        return '';
-    }
-
-    const category = categories.find(category => category.id === id);
-
-    if (!category) {
-        return '';
-    }
-
-    return category.name;
-
-}
+export const getValues = state => {
+    const moduleState = getModuleState(state);
+    return moduleState ? moduleState.values : null;
+};

@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import * as actions from '../actions';
 import * as selectors from "../selectors";
 import DatePicker from "react-datepicker";
-import {CategorySelector} from "../index";
+import {UniversitySelector} from "../index";
 
 const UpdatePost = () => {
 	
@@ -150,7 +150,7 @@ const UpdatePost = () => {
 											Subject
 										</label>
 										<div className="col-md-6">
-											<CategorySelector
+											<UniversitySelector
 												id="categoryId"
 												className={`custom-select my-1 mr-sm-2 form-control`}
 												value={subjectId}

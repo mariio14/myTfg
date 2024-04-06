@@ -54,5 +54,8 @@ export const followPost = (id, onSuccess, onErrors) =>
 	appFetch(`/posts/follow/${id}`, fetchConfig('POST'), onSuccess, onErrors);
 	
 export const unfollowPost = (id, onSuccess, onErrors) =>
-	appFetch(`/posts/unfollow/${id}`, fetchConfig('DELETE'), onSuccess, onErrors);	
+	appFetch(`/posts/unfollow/${id}`, fetchConfig('DELETE'), onSuccess, onErrors);
+
+export const findPostByEtiqueta = (id, {page}, onSuccess) =>
+    appFetch(`/posts/feedEtiqueta/${id}?page=${page}`, fetchConfig('GET'), onSuccess);
 	

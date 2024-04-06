@@ -47,11 +47,15 @@ public class PostDtoReturn {
 
 	private String uniName;
 
+	// Tema ficheros
 	private byte [] files;
 
 	private List<String> fileNames;
 
 	private String urls;
+
+	/////
+	private List<EtiquetaDto> etiquetas;
 
 
 	public PostDtoReturn() {
@@ -59,7 +63,8 @@ public class PostDtoReturn {
 
 	public PostDtoReturn(Long id, Long userId, String userName, byte[] avatar, String titulo, String descripcion,
 						 LocalDateTime creationDate, String academicYear, BigDecimal avgRating, RatingDto rating,
-						 String subjectName, String uniName, byte [] files, List<String> fileNames, String urls) {
+						 String subjectName, String uniName, byte [] files, List<String> fileNames, String urls,
+	   					 List<EtiquetaDto> etiquetas) {
 		this.id = id;
 		this.userId = userId;
 		this.userName = userName;
@@ -75,6 +80,7 @@ public class PostDtoReturn {
 		this.files = files;
 		this.fileNames = fileNames;
 		this.urls = urls;
+		this.etiquetas = etiquetas;
 	}
 
 	public Long getId() {
@@ -195,5 +201,13 @@ public class PostDtoReturn {
 
 	public void setUrls(String urls) {
 		this.urls = urls;
+	}
+
+	public List<EtiquetaDto> getEtiquetas() {
+		return etiquetas;
+	}
+
+	public void setEtiquetas(List<EtiquetaDto> etiquetas) {
+		this.etiquetas = etiquetas;
 	}
 }

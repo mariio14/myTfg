@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from 'react-redux';
-import {AcademicYearSelector, CategorySelector, Feed} from "../../post";
+import {AcademicYearSelector, UniversitySelector, Feed} from "../../post";
 import * as actions from '../actions';
 import SubjectSelector from "./SubjectSelector";
 
@@ -72,7 +72,7 @@ const FilterAndSearch = () => {
 								</h5>
 
 								<div id='card' className={`card-body`}>
-									<CategorySelector style={{ backgroundColor: '#212529', color: 'white', marginLeft: '0px !important' }} id="categoryId" className="custom-select my-1 mr-s m-2" data-testid="uni-selector"
+									<UniversitySelector style={{ backgroundColor: '#212529', color: 'white', marginLeft: '0px !important' }} id="categoryId" className="custom-select my-1 mr-s m-2" data-testid="uni-selector"
 										value={universityId} onChange={e => {setUniversityId(e.target.value); dispatch(actions.findSubjects(e.target.value)); setSubjectId('')}} />
 									<SubjectSelector style={{ backgroundColor: '#212529', color: 'white', marginLeft: '0px !important' }} id="subjectId" className="custom-select my-1 mr-s m-2" data-testid="subject-selector"
 													 value={subjectId} onChange={e => setSubjectId(e.target.value)} disabled={universityId===''}/>

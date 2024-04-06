@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,7 @@ public class PostController {
             throws InstanceNotFoundException, IOException, NoSuchAlgorithmException, InvalidKeyException {
 
         List<MultipartFile> fileList = new ArrayList<>(files.values());
+        //List<String> etiquetasList = new ArrayList<>(etiquetas.values());
 
         Post post = postService.uploadPost(userId,titulo,descripcion,academicYear, Long.valueOf(subjectId), fileList, etiquetas);
 

@@ -100,3 +100,33 @@ export const followPost = postId => dispatch => {
 export const unfollowPost = postId => dispatch => {
 	backend.postService.unfollowPost(postId, _ => dispatch(findPostbyId(postId)))
 }
+
+const findAllKeysCompleted = keys => ({
+	type: actionTypes.FIND_ALL_KEYS_COMPLETED,
+	keys
+});
+
+export const findAllKeys = () => (dispatch) => {
+
+	backend.etiquetaService.findAllKeys(
+		keys => dispatch(findAllKeysCompleted(keys))
+	);
+}
+
+const findValuesCompleted = values => ({
+	type: actionTypes.FIND_VALUES_COMPLETED,
+	values
+});
+
+export const findValues = key => (dispatch) => {
+
+	backend.etiquetaService.findValuesFromKey(key,
+		values => dispatch(findValuesCompleted(values))
+	);
+}
+
+export const getEtiquetaFeed = (id, criteria) => dispatch => {
+	dispatch(clearFeedSearch());
+	backend.postService.findPostByEtiqueta(id, criteria,
+		result => dispatch(getFeedCompleted({criteria, result})));
+}

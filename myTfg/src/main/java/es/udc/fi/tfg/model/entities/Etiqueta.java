@@ -10,7 +10,7 @@ public class Etiqueta {
 
     private Long id;
 
-    private String key;
+    private String clave;
 
     private String value;
 
@@ -19,8 +19,8 @@ public class Etiqueta {
     public Etiqueta() {
     }
 
-    public Etiqueta(String key, String value) {
-        this.key = key;
+    public Etiqueta(String clave, String value) {
+        this.clave = clave;
         this.value = value;
     }
 
@@ -34,12 +34,12 @@ public class Etiqueta {
         this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getClave() {
+        return clave;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setClave(String clave) {
+        this.clave = clave;
     }
 
     public String getValue() {

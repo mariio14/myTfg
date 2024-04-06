@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import users, {Login, SignUp, UpdateProfile, ChangePassword, Logout, UserProfile} from '../../users';
 import Home from "./Home";
 import { Notifications } from "../../notification";
-import {Post, PostDetails, UpdatePost} from "../../post";
+import {EtiquetaFeed, Post, PostDetails, UpdatePost} from "../../post";
 import MyFeed from "../../post/components/MyFeed";
 import {Chat} from "../../messages";
 
@@ -30,6 +30,7 @@ const Body = () => {
 			{loggedIn && <Route path="/messages/:id/:userName" element={<Chat />} />}
 			{<Route path="/feed/posts/:id" element={<PostDetails />} />}
 			{loggedIn && <Route path="/users/:id" element={<UserProfile />} />}
+			{loggedIn && <Route path="/posts/etiquetaFeed/:id" element={<EtiquetaFeed />} />}
 		</Routes>
 	);
 };

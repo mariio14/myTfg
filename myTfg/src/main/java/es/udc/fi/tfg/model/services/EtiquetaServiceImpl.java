@@ -5,6 +5,7 @@ import es.udc.fi.tfg.model.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,28 +21,29 @@ public class EtiquetaServiceImpl implements EtiquetaService {
     private EtiquetaOfPostDao etiquetaOfPostDao;
 
     @Override
-    public void addEtiquetaToPost(Long postId, String etiqueta) throws InstanceNotFoundException {
+    public void addEtiquetasToPost(Long postId, List<String> etiquetas) throws InstanceNotFoundException {
 
         Optional<Post> optionalPost = postDao.findById(postId);
         if (!optionalPost.isPresent()) {
             throw new InstanceNotFoundException("Post no encontrado", postId);
         }
 
-        String[] parts = etiqueta.split("-");
-        String key = parts[0];
-        String value = parts[1];
+        for (String etiqueta : etiquetas) {
+            String[] parts = etiqueta.split("-");
+            String key = parts[0];
+            String value = parts[1];
 
-        Optional<Etiqueta> etiquetaOptional = etiquetaDao.findByKeyAndValue(key, value);
+            Optional<Etiqueta> etiquetaOptional = etiquetaDao.findByClaveAndValue(key, value);
 
-        Etiqueta etiqueta1;
-        if (etiquetaOptional.isEmpty()) {
-            etiqueta1 = new Etiqueta(key, value);
-            etiquetaDao.save(etiqueta1);
+            Etiqueta etiqueta1;
+            if (etiquetaOptional.isEmpty()) {
+                etiqueta1 = new Etiqueta(key, value);
+                etiquetaDao.save(etiqueta1);
+            } else etiqueta1 = etiquetaOptional.get();
+
+            EtiquetaOfPost etiquetaOfPost = new EtiquetaOfPost(optionalPost.get(), etiqueta1);
+            etiquetaOfPostDao.save(etiquetaOfPost);
         }
-        else etiqueta1 = etiquetaOptional.get();
-
-        EtiquetaOfPost etiquetaOfPost = new EtiquetaOfPost(optionalPost.get(),etiqueta1);
-        etiquetaOfPostDao.save(etiquetaOfPost);
     }
 
     @Override
@@ -65,5 +67,15 @@ public class EtiquetaServiceImpl implements EtiquetaService {
         etiquetaOfPostDao.delete(optionalEtiquetaOfPost.get());
         optionalPost.get().getEtiquetas().remove(optionalEtiquetaOfPost.get());
         optionalEtiqueta.get().getEtiquetas().remove(optionalEtiquetaOfPost.get());
+    }
+
+    @Override
+    public List<String> getKeys() {
+        return etiquetaDao.findAllDistinctKeys();
+    }
+
+    @Override
+    public List<String> getValuesFromKey(String key) {
+        return etiquetaDao.findValuesByKey(key);
     }
 }

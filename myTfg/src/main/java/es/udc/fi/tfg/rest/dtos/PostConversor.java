@@ -1,6 +1,8 @@
 package es.udc.fi.tfg.rest.dtos;
 
 import es.udc.fi.tfg.model.entities.Apunte;
+import es.udc.fi.tfg.model.entities.Etiqueta;
+import es.udc.fi.tfg.model.entities.EtiquetaOfPost;
 import es.udc.fi.tfg.model.entities.Post;
 
 
@@ -10,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The Class PostConversor.
@@ -42,9 +45,15 @@ public class PostConversor{
 			fileNames.add(apunte.getName());
 			urls.add(apunte.getStoragePath());
 		}
+		Set<EtiquetaOfPost> etiquetasSet = post.getEtiquetas();
+		List<Etiqueta> etiquetas = new ArrayList<>();
+		for(EtiquetaOfPost etiqueta: etiquetasSet){
+			etiquetas.add(etiqueta.getEtiqueta());
+		}
+
 		return new PostDtoReturn(post.getId(),post.getUser().getId(), post.getUser().getUserName(), post.getUser().getAvatar(), post.getTitle(), post.getDescription(),
 				post.getCreationDate(), post.getAcademicYear() + "/" + year, post.getAvgRating(), rating, post.getSubject().getSubjectName(),
-				post.getSubject().getUniversity().getUniName(), null, fileNames, "");
+				post.getSubject().getUniversity().getUniName(), null, fileNames, "", EtiquetaConversor.toEtiquetaDtos(etiquetas));
 	}
 
 	public static final PostFeedDto toPostFeedDto(Post post) throws IOException {

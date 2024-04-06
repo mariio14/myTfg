@@ -117,10 +117,12 @@ public class PostServiceImpl implements PostService  {
 
         for (String etiqueta: etiquetas) {
             String[] parts = etiqueta.split("-");
+            System.out.println(etiqueta);
+            System.out.println(parts[0]);
             String key = parts[0];
             String value = parts[1];
 
-            Optional<Etiqueta> etiquetaOptional = etiquetaDao.findByKeyAndValue(key, value);
+            Optional<Etiqueta> etiquetaOptional = etiquetaDao.findByClaveAndValue(key, value);
 
             Etiqueta etiqueta1;
             if (etiquetaOptional.isEmpty()) {

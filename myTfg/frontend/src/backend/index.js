@@ -5,6 +5,7 @@ import * as commentService from "./commentService";
 import * as notificationService from "./notificationService";
 import * as postService from "./postService";
 import * as messageService from "./messageService";
+import * as etiquetaService from "./etiquetaService";
 
 export { default as NetworkError } from "./NetworkError";
 
@@ -16,7 +17,8 @@ const backend = {
   commentService,
   notificationService,
   postService,
-  messageService
+  messageService,
+  etiquetaService
 };
 
 export default backend;

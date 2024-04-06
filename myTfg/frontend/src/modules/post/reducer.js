@@ -7,7 +7,9 @@ const initialState = {
 	feed: [],
 	post: null,
 	universities: null,
-	subjects: null
+	subjects: null,
+	keys: null,
+	values: null
 };
 
 const feed = (state = initialState.feed, action) => {
@@ -66,11 +68,41 @@ const subjects = (state = initialState.subjects, action) => {
 
 }
 
+const keys = (state = initialState.keys, action) => {
+
+	switch (action.type) {
+
+		case actionTypes.FIND_ALL_KEYS_COMPLETED:
+			return action.keys;
+
+		default:
+			return state;
+
+	}
+
+}
+
+const values = (state = initialState.values, action) => {
+
+	switch (action.type) {
+
+		case actionTypes.FIND_VALUES_COMPLETED:
+			return action.values;
+
+		default:
+			return state;
+
+	}
+
+}
+
 const reducer = combineReducers({
 	feed,
 	post,
 	universities,
-	subjects
+	subjects,
+	keys,
+	values
 });
 
 export default reducer;

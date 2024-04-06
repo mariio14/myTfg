@@ -2,7 +2,7 @@ import { useSelector} from 'react-redux';
 import PropTypes from 'prop-types';
 import * as selectors from '../selectors';
 
-const CategorySelector = (selectProps) => {
+const UniversitySelector = (selectProps) => {
 
     const universities = useSelector(selectors.getUniversities);
 
@@ -22,8 +22,8 @@ const CategorySelector = (selectProps) => {
 
 }
 
-CategorySelector.propTypes = {
+UniversitySelector.propTypes = {
     selectProps: PropTypes.object
 };
 
-export default CategorySelector;
+export default UniversitySelector;

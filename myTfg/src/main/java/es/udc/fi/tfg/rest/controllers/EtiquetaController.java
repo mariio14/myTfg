@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/etiquetas")
@@ -15,9 +16,19 @@ public class EtiquetaController {
     private EtiquetaService etiquetaService;
 
 
+    @GetMapping("/allKey")
+    public List<String> getAllKeys(){
+        return etiquetaService.getKeys();
+    }
+
+    @GetMapping("/values")
+    public List<String> getAllValuesFromKey(@RequestParam String key){
+        return etiquetaService.getValuesFromKey(key);
+    }
+
     @PostMapping("/{postId}")
-    public void addEtiquetaToPost(@PathVariable Long postId, @RequestParam String etiqueta) throws InstanceNotFoundException {
-        etiquetaService.addEtiquetaToPost(postId,etiqueta);
+    public void addEtiquetasToPost(@PathVariable Long postId, @RequestParam List<String> etiquetas) throws InstanceNotFoundException {
+        etiquetaService.addEtiquetasToPost(postId,etiquetas);
     }
 
     @PutMapping("/{postId}/{etiquetaId}")

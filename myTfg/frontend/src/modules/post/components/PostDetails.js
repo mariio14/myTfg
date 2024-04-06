@@ -42,6 +42,11 @@ const PostDetails = () => {
 		return () => dispatch(actions.postByIdClear);
 	}, [id, dispatch]
 	)
+
+	const navigateToEtiquetaFeed = (id) => {
+		const path = `/posts/etiquetaFeed/${id}`;
+		navigate(path);
+	}
 	
 	const handleFavoriteClick = (event) => {
 		event.preventDefault();
@@ -112,6 +117,12 @@ const PostDetails = () => {
 							<div className="post-header">
 								<div className="post-text">
 									<div className="header-box">
+										{post.etiquetas && post.etiquetas.map((etiqueta, idxEtiqueta) =>
+											<div className="post-card-complete" style={{ position: 'relative' }}
+												 onClick={() => navigateToEtiquetaFeed(etiqueta.id)}>
+												{etiqueta.text}
+											</div>
+										)}
 										<div className="post-title" style={{textAlign:'center'}}>
 											<div className="post-card-complete" style={{ position: 'relative' }}>
 											  <button style={{ position: 'absolute', top: '10px', right: '10px', background: 'none', border: 'none' }} onClick={(e) => handleFavoriteClick(e)}>
@@ -128,7 +139,6 @@ const PostDetails = () => {
 											<hr></hr>
 											<div className="post-text-info">
 												<h4 data-testid="post-details-category">{post.uniName}</h4>
-												<h4 data-testid="post-details-price">${post.precio}</h4>
 											</div>
 											<div>
 												<div>
